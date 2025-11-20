@@ -1,0 +1,13 @@
+<h2>Listing List</h2>
+
+@if (listings$ | async; as listings) {
+
+<ul>
+  @for (listing of listings; track listing.id) {
+  <li>{{ listing.title }} {{ listing.id }}</li>
+  }
+</ul>
+} @else {
+Loading listings...
+
+}
