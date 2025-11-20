@@ -12,9 +12,6 @@ import { AsyncPipe } from '@angular/common';
 })
 
 export class Listings {
-  service = inject(ListingService);
-
   private dataService = inject(ListingService);
-  listings$: Observable<Listing[]> = this.service.getListings();
-
+  listings$: Observable<Listing[]> = this.dataService.getListings();
 }
