@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Listing } from '../listings/listing.interface';
+import { Component, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { linkValidator } from '../../validators/linkValidator';
 
 @Component({
   selector: 'app-form',
@@ -9,7 +14,6 @@ import { Listing } from '../listings/listing.interface';
   styleUrl: './form.scss',
 })
 export class Form {
-
   onSubmit() {
     console.log('forms submitted with ');
     console.table(this.listingForm.value);
@@ -21,21 +25,29 @@ export class Form {
     this.listingTitle.setValue(this.listingTitle.value + ' is the listing title');
   }
 
-  // listingForm = new FormGroup({
-  //   _id: new FormControl(""),
-  //   title: new FormControl(""),
-  //   description: new FormControl(""),
-  //   image: new FormControl(""),
-  //   price: new FormControl(""),
-  //   datePosted: new FormControl(""),
-
-  private fb = new FormBuilder();
+  private fb = inject (FormBuilder);
   listingForm = this.fb.group({
     _id: [''],
-    title: [''],
-    description: [''],
-    image: [''],
-    price: [''],
-    datePosted: [''],
+    title: ['', [Validators.required, Validators.minLength(1)]],
+    description: ['', [Validators.required, Validators.minLength(12)]],
+    image: ['', [Validators.required, linkValidator()]],
+    price: ['', [Validators.required, Validators.min(0.01), Validators.max(999999999)]],
+    datePosted: [new Date().toDateString(), Validators.required],
   });
+
+  get title() {
+    return this.listingForm.get('title');
+  }
+
+  get description() {
+    return this.listingForm.get('description');
+  }
+
+  get image() {
+    return this.listingForm.get('image');
+  }
+
+  get price() {
+    return this.listingForm.get('price');
+  }
 }

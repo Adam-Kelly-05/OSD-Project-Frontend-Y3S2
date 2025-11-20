@@ -1,38 +1,41 @@
 <label for="listingTitle">Listing Title: </label>
-<input id="listingTitle" type="text" [formControl]="listingTitle">
-
-<p>Current Value {{listingTitle.value}}</p>
-
+<input id="listingTitle" type="text" [formControl]="listingTitle" />
+<p>Current Value {{ listingTitle.value }}</p>
 <button type="button" (click)="updateListing()">Update Listing Title</button>
-
 <form [formGroup]="listingForm" (ngSubmit)="onSubmit()" class="listing-form">
-  <div>
-    <label for="listingTitle">Title:</label>
-    <input id="listingTitle" type="text" formControlName="title" />
-  </div>
-  <div>
-    <label for="listingDescription">Description:</label>
-    <textarea id="listingDescription" formControlName="description"></textarea>
-  </div>
-  <div>
-    <label for="listingImage">Image URL:</label>
-    <input id="listingImage" type="url" formControlName="image" />
-  </div>
-  <div>
-    <label for="listingPrice">Price:</label>
-    <input id="listingPrice" type="number" formControlName="price" />
-  </div>
-  <div>
-    <label for="listingDate">Date Posted:</label>
-    <input id="listingDate" type="date" formControlName="datePosted" />
-  </div>
-  <button type="submit">Submit</button>
+<div>
+   <label for="listingTitle">Title:</label>
+   <input id="listingTitle" type="text" formControlName="title" />
+</div>
+<div>
+   <label for="listingDescription">Description:</label>
+   <textarea id="listingDescription" formControlName="description"></textarea>
+</div>
+<div>
+   <label for="listingImage">Image URL:</label>
+   <input id="listingImage" type="url" formControlName="image" />
+</div>
+<div>
+   <label for="listingPrice">Price:</label>
+   <input id="listingPrice" type="number" formControlName="price" />
+</div>
+<div>
+   @if (description?.invalid && description?.touched) {
+   Description is required and must be at least 12 letters
+   }
+</div>
+<div>
+   @if(image?.hasError('invalidUrl') && image?.touched) {
+   Please enter a valid URL
+   }
+</div>
+<button type="submit" [disabled]="listingForm.invalid">Submit</button>
 </form>
-
-<div>Values
-    <p>{{listingForm.get('listingTitle')?.value}}</p>
-    <p>{{listingForm.get('listingDescription')?.value}}</p>
-    <p>{{listingForm.get('listingImage')?.value}}</p>
-    <p>{{listingForm.get('listingPrice')?.value}}</p>
-    <p>{{listingForm.get('listingDate')?.value}}</p>
+<div>
+   Values
+   <p>{{ listingForm.get('title')?.value }}</p>
+   <p>{{ listingForm.get('description')?.value }}</p>
+   <p>{{ listingForm.get('image')?.value }}</p>
+   <p>{{ listingForm.get('price')?.value }}</p>
+   <p>{{ listingForm.get('datePosted')?.value }}</p>
 </div>
