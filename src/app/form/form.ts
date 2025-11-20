@@ -6,10 +6,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { linkValidator } from '../../validators/linkValidator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule, MatFormField, MatLabel, MatInput, MatHint, MatError } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule, MatCard } from '@angular/material/card';
+import { priceValidator } from '../../validators/priceValidator';
 
 @Component({
   selector: 'app-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatCard, MatButtonModule],
   templateUrl: './form.html',
   styleUrl: './form.scss',
 })
@@ -28,10 +33,10 @@ export class Form {
   private fb = inject (FormBuilder);
   listingForm = this.fb.group({
     _id: [''],
-    title: ['', [Validators.required, Validators.minLength(1)]],
+    title: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(12)]],
     image: ['', [Validators.required, linkValidator()]],
-    price: ['', [Validators.required, Validators.min(0.01), Validators.max(999999999)]],
+    price: ['', [Validators.required, priceValidator()]],
     datePosted: [new Date().toDateString(), Validators.required],
   });
 
