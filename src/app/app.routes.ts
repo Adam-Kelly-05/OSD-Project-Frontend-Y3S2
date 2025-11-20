@@ -7,7 +7,7 @@ import { ListingDetailsComponent } from './listing-details-component/listing-det
 export const routes: Routes = [
     {path: '', component: Home},
     {path: 'home', redirectTo: '/'},
-    {path: 'listings-list', component: Listings},
+    {path: 'listing-list', component: Listings},
     {path: 'form', component: Form},
     {path: 'listing-list/:id', component: ListingDetailsComponent}
 ];

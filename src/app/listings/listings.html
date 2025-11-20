@@ -4,10 +4,12 @@
 
 <ul>
   @for (listing of listings; track listing._id) {
-  <li>{{ listing.title }} {{ listing._id }}</li>
+    <li>{{ listing.title }} {{ listing._id }}</li>
+
+    <a [routerLink] = "['/listing-list',listing._id]" >VIEW DETAILS</a>
   }
 </ul>
-} @else {
-Loading listings...
-
+}
+@else {
+  Loading listings...
 }
