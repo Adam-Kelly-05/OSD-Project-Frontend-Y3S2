@@ -3,8 +3,8 @@
 @if (listings$ | async; as listings) {
 
 <ul>
-  @for (listing of listings; track listing.id) {
-  <li>{{ listing.title }} {{ listing.id }}</li>
+  @for (listing of listings; track listing._id) {
+  <li>{{ listing.title }} {{ listing._id }}</li>
   }
 </ul>
 } @else {
