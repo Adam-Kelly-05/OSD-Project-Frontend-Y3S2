@@ -1,6 +1,16 @@
-<p>user-details-component works!</p>
-
-@if (listing$ | async; as listing)
-{
-    {{listing.title}}
+@if (listing$ | async; as listing) {
+  <mat-card>
+    <mat-card-title>
+      {{ listing.title }}
+    </mat-card-title>
+    <mat-card-content>
+      <p>Id: {{ listing._id }}</p>
+      <p>Description: {{ listing.description }}</p>
+      <p>Image: {{ listing.image }}</p>
+      <p>Price: {{ listing.price }}</p>
+      <p>Date posted: {{ listing.datePosted }}</p>
+      <button mat-flat-button color="error" (click)="deleteListing()">Delete</button>
+    </mat-card-content>
+  </mat-card>
+  <app-form [listing]="listing"></app-form>
 }

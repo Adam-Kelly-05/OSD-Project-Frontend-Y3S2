@@ -1,10 +1,3 @@
-<label for="listingTitle">Listing Title: </label>
-<input id="listingTitle" type="text" [formControl]="listingTitle" />
-
-<p>Current Value {{ listingTitle.value }}</p>
-
-<button type="button" (click)="updateListing()">Update Listing Title</button>
-
 <mat-card>
 	<form [formGroup]="listingForm" (ngSubmit)="onSubmit()" class="listing-form">
 		<mat-form-field>

@@ -1,44 +1,110 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { linkValidator } from '../../validators/linkValidator';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule, MatFormField, MatLabel, MatInput, MatHint, MatError } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule, MatCard } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatCard } from '@angular/material/card';
 import { priceValidator } from '../../validators/priceValidator';
+import { Listing } from '../listings/listing.interface';
+import { ListingService } from '../listings/listing.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
-  imports: [ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError, MatCard, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatCard,
+    MatButtonModule,
+  ],
   templateUrl: './form.html',
   styleUrl: './form.scss',
 })
 export class Form {
+  private fb = inject(FormBuilder);
+  private listingService = inject(ListingService);
+  private router = inject(Router);
+
+  listing = input<Listing | undefined>();
+  
+  listingForm: FormGroup;
+
+  constructor() {
+    if (this.listing()) {
+      console.log(this.listing()?.title || 'nothing');
+    }
+
+    this.listingForm = this.fb.group({
+      _id: [''],
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(12)]],
+      image: ['', [Validators.required, linkValidator()]],
+      price: ['', [Validators.required, priceValidator()]],
+      datePosted: [new Date().toDateString(), Validators.required],
+    });
+
+    effect(() => {
+      const listing = this.listing();
+      if (listing) {
+        this.listingForm.patchValue({
+          _id: listing._id ?? '',
+          title: listing.title,
+          description: listing.description,
+          image: listing.image,
+          price: listing.price,
+          datePosted: listing.datePosted,
+        });
+      }
+    });
+  }
+
   onSubmit() {
     console.log('forms submitted with ');
     console.table(this.listingForm.value);
+
+    const currentListing = this.listing();
+    const formValues = this.listingForm.value as Listing;
+    const id = currentListing?._id || formValues._id;
+
+    if (!id) {
+      this.createNew(formValues);
+    } else {
+      this.updateExisting(id, formValues);
+    }
   }
 
-  listingTitle = new FormControl('Blue Couch');
-
-  updateListing() {
-    this.listingTitle.setValue(this.listingTitle.value + ' is the listing title');
+  updateExisting(id: string, updatedValues: Listing) {
+    this.listingService.updateListing(id, { ...updatedValues, _id: id }).subscribe({
+      next: response => {
+        this.router.navigateByUrl('/listing-list');
+      },
+      error: (err: Error) => {
+        console.log(err.message);
+        // this.message = err
+      },
+    });
   }
 
-  private fb = inject (FormBuilder);
-  listingForm = this.fb.group({
-    _id: [''],
-    title: ['', [Validators.required]],
-    description: ['', [Validators.required, Validators.minLength(12)]],
-    image: ['', [Validators.required, linkValidator()]],
-    price: ['', [Validators.required, priceValidator()]],
-    datePosted: [new Date().toDateString(), Validators.required],
-  });
+  createNew(formValues: Listing) {
+    this.listingService.addListing({ ...formValues }).subscribe({
+      next: response => {
+        this.router.navigateByUrl('/listing-list');
+      },
+      error: (err: Error) => {
+        console.log(err.message);
+        // this.message = err
+      },
+    });
+  }
 
   get title() {
     return this.listingForm.get('title');
