@@ -1,0 +1,15 @@
+<h2>All Users</h2>
+
+@if (users$ | async; as users) {
+
+<ul>
+  @for (user of users; track user._id) {
+    <li>{{ user.name }} {{ user._id }}</li>
+
+    <a [routerLink] = "['/user-list',user._id]" >VIEW DETAILS</a>
+  }
+</ul>
+}
+@else {
+  Loading users...
+}
