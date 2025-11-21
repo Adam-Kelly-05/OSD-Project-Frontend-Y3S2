@@ -6,11 +6,11 @@ import { Listing } from "../listings/listing.interface";
 import { Observable } from "rxjs";
 import { MatCard, MatCardContent, MatCardTitle } from "@angular/material/card";
 import { MatFormField } from "@angular/material/input";
-import { Form } from "../form/form";
+import { ListingForm } from "../listing-form/listing-form";
 
 @Component({
   selector: 'app-user-details-component',
-  imports: [RouterModule, AsyncPipe, MatCard, MatCardContent, MatCardTitle, Form],
+  imports: [RouterModule, AsyncPipe, MatCard, MatCardContent, MatCardTitle, ListingForm],
   templateUrl: './listing-details-component.html',
   styleUrl: './listing-details-component.scss',
 })

@@ -16,7 +16,7 @@ import { ListingService } from '../listings/listing.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-listing-form',
   imports: [
     ReactiveFormsModule,
     MatFormField,
@@ -26,10 +26,10 @@ import { Router } from '@angular/router';
     MatCard,
     MatButtonModule,
   ],
-  templateUrl: './form.html',
-  styleUrl: './form.scss',
+  templateUrl: './listing-form.html',
+  styleUrl: './listing-form.scss',
 })
-export class Form {
+export class ListingForm {
   private fb = inject(FormBuilder);
   private listingService = inject(ListingService);
   private router = inject(Router);
