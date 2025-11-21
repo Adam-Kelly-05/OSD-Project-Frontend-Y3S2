@@ -1,0 +1,25 @@
+<mat-card>
+	<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="userForm">
+		<mat-form-field>
+			<mat-label for="userName">Name:</mat-label>
+			<input id="userName" type="text" formControlName="name" matInput/>
+			<mat-error>Input Required</mat-error>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label for="userPhoneNumber">Phone Number:</mat-label>
+			<input id="userPhoneNumber" formControlName="phoneNumber" matInput/>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label for="userEmail">Email:</mat-label>
+			<input id="userEmail" type="url" formControlName="email" matInput/>
+		</mat-form-field>
+		<button type="submit" [disabled]="userForm.invalid" matButton="outlined">Submit</button>
+	</form>
+</mat-card>
+
+<div>
+   Values
+   <p>{{ userForm.get('name')?.value }}</p>
+   <p>{{ userForm.get('phoneNumber')?.value }}</p>
+   <p>{{ userForm.get('email')?.value }}</p>
+</div>

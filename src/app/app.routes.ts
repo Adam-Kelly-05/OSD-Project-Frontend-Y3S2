@@ -3,11 +3,17 @@ import { Listings } from './listings/listings';
 import { Home } from './home/home';
 import { ListingForm } from './listing-form/listing-form';
 import { ListingDetailsComponent } from './listing-details-component/listing-details-component';
+import { UserForm } from './user-form/user-form';
+// import { UserDetailsComponent } from './user-details-component/user-details-component';
+import { Users } from './users/users';
 
 export const routes: Routes = [
     {path: '', component: Home},
     {path: 'home', redirectTo: '/'},
     {path: 'listing-list', component: Listings},
     {path: 'listing-form', component: ListingForm},
-    {path: 'listing-list/:id', component: ListingDetailsComponent}
+    {path: 'listing-list/:id', component: ListingDetailsComponent},
+    {path: 'user-list', component: Users},
+    {path: 'user-form', component: UserForm},
+    // {path: 'user-list/:id', component: UserDetailsComponent}
 ];
