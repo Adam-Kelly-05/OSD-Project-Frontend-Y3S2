@@ -7,6 +7,7 @@ import { MatCard } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.interface';
+import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-user-form',
@@ -37,10 +38,13 @@ export class UserForm {
     }
 
     this.userForm = this.fb.group({
-      name: ['', [Validators.required]],
-      phonenumber: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(11)]],
-      email: ['', [Validators.required, Validators.email]],
-      dob: [''],
+      name: ['', [Validators.required, Validators.maxLength(100)]],
+      phonenumber: [
+        '',
+        [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)],
+      ],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+      dob: ['', Validators.required],
     });
 
     effect(() => {
@@ -63,18 +67,15 @@ export class UserForm {
 
     const currentUser = this.user();
     const formValues = this.userForm.value as User & { dob?: string };
-    const preparedValues: User = {
+    const normalizedValues: User = {
       ...formValues,
       dob: formValues.dob ? new Date(formValues.dob) : undefined,
-      dateJoined: new Date(),
-      lastUpdated: new Date(),
     };
-    const id = currentUser?._id || preparedValues._id;
 
-    if (!id) {
-      this.createNew(preparedValues);
+    if (!currentUser || !currentUser._id) {
+      this.createNew(normalizedValues);
     } else {
-      this.updateExisting(id, preparedValues);
+      this.updateExisting(currentUser._id, normalizedValues);
     }
   }
 
@@ -108,5 +109,21 @@ export class UserForm {
     }
     const parsedDate = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
     return Number.isNaN(parsedDate.getTime()) ? '' : parsedDate.toISOString().slice(0, 10);
+  }
+
+  get name() {
+    return this.userForm.get('name');
+  }
+
+  get phonenumber() {
+    return this.userForm.get('phonenumber');
+  }
+
+  get email() {
+    return this.userForm.get('email');
+  }
+
+  get dob() {
+    return this.userForm.get('dob');
   }
 }
