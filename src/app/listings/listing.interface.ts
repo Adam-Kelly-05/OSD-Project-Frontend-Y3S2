@@ -4,6 +4,6 @@ export interface Listing {
     description: string;
     image: string;
     price: Number;
-    // posterPhoneNumber?: User["phonenumber"];
+    posterUser?: string;
     datePosted: Date;
 };

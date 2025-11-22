@@ -48,6 +48,7 @@ export class ListingForm {
       description: ['', [Validators.required, Validators.minLength(12)]],
       image: ['', [Validators.required, linkValidator()]],
       price: ['', [Validators.required, priceValidator()]],
+      posterUser: ['', [Validators.required, Validators.minLength(24), Validators.maxLength(24)]],
       datePosted: [new Date().toDateString(), Validators.required],
     });
 
@@ -59,6 +60,7 @@ export class ListingForm {
           description: listing.description,
           image: listing.image,
           price: listing.price,
+          posterUser: listing.posterUser,
           datePosted: listing.datePosted,
         });
       }
@@ -116,5 +118,9 @@ export class ListingForm {
 
   get price() {
     return this.listingForm.get('price');
+  }
+
+  get posterUser() {
+    return this.listingForm.get('posterUser');
   }
 }
