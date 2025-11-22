@@ -35,7 +35,7 @@ export class ListingForm {
   private router = inject(Router);
 
   listing = input<Listing | undefined>();
-  
+
   listingForm: FormGroup;
 
   constructor() {
@@ -44,7 +44,6 @@ export class ListingForm {
     }
 
     this.listingForm = this.fb.group({
-      _id: [''],
       title: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(12)]],
       image: ['', [Validators.required, linkValidator()]],
@@ -56,7 +55,6 @@ export class ListingForm {
       const listing = this.listing();
       if (listing) {
         this.listingForm.patchValue({
-          _id: listing._id ?? '',
           title: listing.title,
           description: listing.description,
           image: listing.image,
@@ -72,19 +70,17 @@ export class ListingForm {
     console.table(this.listingForm.value);
 
     const currentListing = this.listing();
-    const formValues = this.listingForm.value as Listing;
-    const id = currentListing?._id || formValues._id;
 
-    if (!id) {
-      this.createNew(formValues);
+    if (!currentListing || !currentListing._id) {
+      this.createNew(this.listingForm.value as Listing);
     } else {
-      this.updateExisting(id, formValues);
+      this.updateExisting(currentListing._id, this.listingForm.value as Listing);
     }
   }
 
   updateExisting(id: string, updatedValues: Listing) {
-    this.listingService.updateListing(id, { ...updatedValues, _id: id }).subscribe({
-      next: response => {
+    this.listingService.updateListing(id, { ...updatedValues }).subscribe({
+      next: (response) => {
         this.router.navigateByUrl('/listing-list');
       },
       error: (err: Error) => {
@@ -96,7 +92,7 @@ export class ListingForm {
 
   createNew(formValues: Listing) {
     this.listingService.addListing({ ...formValues }).subscribe({
-      next: response => {
+      next: (response) => {
         this.router.navigateByUrl('/listing-list');
       },
       error: (err: Error) => {

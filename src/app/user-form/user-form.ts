@@ -1,23 +1,20 @@
 import { Component, effect, inject, input } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatCard } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.interface';
 
 @Component({
-  selector: 'app-listing-form',
+  selector: 'app-user-form',
   imports: [
     ReactiveFormsModule,
     MatFormField,
-    MatLabel,
     MatInput,
+    MatLabel,
     MatError,
     MatCard,
     MatButtonModule,
@@ -27,7 +24,7 @@ import { User } from '../users/user.interface';
 })
 export class UserForm {
   private fb = inject(FormBuilder);
-  private listingService = inject(UserService);
+  private userService = inject(UserService);
   private router = inject(Router);
 
   user = input<User | undefined>();
@@ -40,47 +37,50 @@ export class UserForm {
     }
 
     this.userForm = this.fb.group({
-    //   _id: [''],
-    //   title: ['', [Validators.required]],
-    //   description: ['', [Validators.required, Validators.minLength(12)]],
-    //   image: ['', [Validators.required, linkValidator()]],
-    //   price: ['', [Validators.required, priceValidator()]],
-    //   datePosted: [new Date().toDateString(), Validators.required],
+      name: ['', [Validators.required]],
+      phonenumber: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(11)]],
+      email: ['', [Validators.required, Validators.email]],
+      dob: [''],
     });
 
     effect(() => {
       const user = this.user();
       if (user) {
         this.userForm.patchValue({
-          // _id: user._id ?? '',
-          // title: user.title,
-          // description: user.description,
-          // image: user.image,
-          // price: user.price,
-          // datePosted: user.datePosted,
+          name: user.name,
+          phonenumber: user.phonenumber,
+          email: user.email,
+          dob: this.formatDateForInput(user.dob),
         });
       }
     });
   }
 
+  // ChatGPT helped me write this function
   onSubmit() {
     console.log('forms submitted with ');
     console.table(this.userForm.value);
 
     const currentUser = this.user();
-    const formValues = this.userForm.value as User;
-    const id = currentUser?._id || formValues._id;
+    const formValues = this.userForm.value as User & { dob?: string };
+    const preparedValues: User = {
+      ...formValues,
+      dob: formValues.dob ? new Date(formValues.dob) : undefined,
+      dateJoined: new Date(),
+      lastUpdated: new Date(),
+    };
+    const id = currentUser?._id || preparedValues._id;
 
     if (!id) {
-      this.createNew(formValues);
+      this.createNew(preparedValues);
     } else {
-      this.updateExisting(id, formValues);
+      this.updateExisting(id, preparedValues);
     }
   }
 
   updateExisting(id: string, updatedValues: User) {
-    this.listingService.updateUser(id, { ...updatedValues, _id: id }).subscribe({
-      next: response => {
+    this.userService.updateUser(id, { ...updatedValues }).subscribe({
+      next: (response) => {
         this.router.navigateByUrl('/user-list');
       },
       error: (err: Error) => {
@@ -91,8 +91,8 @@ export class UserForm {
   }
 
   createNew(formValues: User) {
-    this.listingService.addUser({ ...formValues }).subscribe({
-      next: response => {
+    this.userService.addUser({ ...formValues }).subscribe({
+      next: (response) => {
         this.router.navigateByUrl('/user-list');
       },
       error: (err: Error) => {
@@ -102,19 +102,11 @@ export class UserForm {
     });
   }
 
-  get title() {
-    return this.userForm.get('title');
-  }
-
-  get description() {
-    return this.userForm.get('description');
-  }
-
-  get image() {
-    return this.userForm.get('image');
-  }
-
-  get price() {
-    return this.userForm.get('price');
+  private formatDateForInput(dateValue?: Date | string | null): string {
+    if (!dateValue) {
+      return '';
+    }
+    const parsedDate = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
+    return Number.isNaN(parsedDate.getTime()) ? '' : parsedDate.toISOString().slice(0, 10);
   }
 }

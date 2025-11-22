@@ -7,11 +7,15 @@
 		</mat-form-field>
 		<mat-form-field>
 			<mat-label for="userPhoneNumber">Phone Number:</mat-label>
-			<input id="userPhoneNumber" formControlName="phoneNumber" matInput/>
+			<input id="userPhoneNumber" type="text" formControlName="phonenumber" matInput/>
 		</mat-form-field>
 		<mat-form-field>
 			<mat-label for="userEmail">Email:</mat-label>
-			<input id="userEmail" type="url" formControlName="email" matInput/>
+			<input id="userEmail" type="email" formControlName="email" matInput/>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label for="userDob">Date of Birth:</mat-label>
+			<input id="userDob" type="date" formControlName="dob" matInput/>
 		</mat-form-field>
 		<button type="submit" [disabled]="userForm.invalid" matButton="outlined">Submit</button>
 	</form>
@@ -20,6 +24,7 @@
 <div>
    Values
    <p>{{ userForm.get('name')?.value }}</p>
-   <p>{{ userForm.get('phoneNumber')?.value }}</p>
+   <p>{{ userForm.get('phonenumber')?.value }}</p>
    <p>{{ userForm.get('email')?.value }}</p>
+   <p>{{ userForm.get('dob')?.value }}</p>
 </div>

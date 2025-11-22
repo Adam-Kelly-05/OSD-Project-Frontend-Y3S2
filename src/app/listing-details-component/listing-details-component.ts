@@ -34,7 +34,7 @@ export class ListingDetailsComponent {
     if (this.id) {
       this.listingService.deleteListing(this.id).subscribe({
         next: (response) => {
-          this.router.navigateByUrl('/user-list');
+          this.router.navigateByUrl('/listing-list');
         },
         error: (err: Error) => {
           console.log(err.message);

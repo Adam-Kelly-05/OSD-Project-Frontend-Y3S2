@@ -4,8 +4,8 @@ import { Home } from './home/home';
 import { ListingForm } from './listing-form/listing-form';
 import { ListingDetailsComponent } from './listing-details-component/listing-details-component';
 import { UserForm } from './user-form/user-form';
-// import { UserDetailsComponent } from './user-details-component/user-details-component';
 import { Users } from './users/users';
+import { UserDetailsComponent } from './user-details-component/user-details-component';
 
 export const routes: Routes = [
     {path: '', component: Home},
@@ -15,5 +15,5 @@ export const routes: Routes = [
     {path: 'listing-list/:id', component: ListingDetailsComponent},
     {path: 'user-list', component: Users},
     {path: 'user-form', component: UserForm},
-    // {path: 'user-list/:id', component: UserDetailsComponent}
+    {path: 'user-list/:id', component: UserDetailsComponent},
 ];

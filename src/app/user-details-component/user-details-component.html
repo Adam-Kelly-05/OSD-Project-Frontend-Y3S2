@@ -1,0 +1,18 @@
+<h1>User Details</h1>
+@if (user$ | async; as user) {
+  <mat-card>
+    <mat-card-title>
+      {{ user.name }}
+    </mat-card-title>
+    <mat-card-content>
+      <p>Id: {{ user._id }}</p>
+      <p>Description: {{ user.phonenumber }}</p>
+      <p>Image: {{ user.email }}</p>
+      <p>Price: {{ user.dob }}</p>
+      <p>Date posted: {{ user.dateJoined }}</p>
+      <p>Date posted: {{ user.lastUpdated }}</p>
+      <button mat-flat-button color="error" (click)="deleteUser()">Delete</button>
+    </mat-card-content>
+  </mat-card>
+  <app-user-form [user]="user"></app-user-form>
+}
