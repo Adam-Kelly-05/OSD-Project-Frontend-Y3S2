@@ -7,7 +7,7 @@
     <mat-card-content>
       <p>Id: {{ listing._id }}</p>
       <p>Description: {{ listing.description }}</p>
-      <p>Image: {{ listing.image }}</p>
+      <img [src]="listing.image" alt="{{ listing.title }}" width="200"/>
       <p>Price: {{ listing.price }}</p>
       <p>Posted by User Id: {{ listing.posterUser }}</p>
       <p>Date posted: {{ listing.datePosted }}</p>
