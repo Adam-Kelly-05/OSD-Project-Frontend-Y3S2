@@ -2,13 +2,14 @@ import { R } from '@angular/cdk/keycodes';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { User } from './user.interface';
 import { UserService } from './user.service';
 
 @Component({
   selector: 'app-users',
-  imports: [AsyncPipe, RouterLink],
+  imports: [AsyncPipe, RouterLink, FormsModule],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })
@@ -16,4 +17,5 @@ import { UserService } from './user.service';
 export class Users {
   private dataService = inject(UserService);
   users$: Observable<User[]> = this.dataService.getUsers();
+  searchId = '';
 }

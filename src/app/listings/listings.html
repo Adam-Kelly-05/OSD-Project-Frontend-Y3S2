@@ -1,15 +1,18 @@
 <h2>All Listings</h2>
 
+<label for="listingSearchString">Search Listing<br></label>
+<input id="listingSearchString" type="text" [(ngModel)]="searchId" placeholder="Enter listing title"/>
+
 @if (listings$ | async; as listings) {
-
 <ul>
-  @for (listing of listings; track listing._id) {
-    <li>{{ listing.title }} {{ listing._id }}</li>
-
-    <a [routerLink] = "['/listing-list',listing._id]" >VIEW DETAILS</a>
-  }
+   @for (listing of listings; track listing._id) {
+    @if (!searchId || listing.title?.toLowerCase()?.includes(searchId.toLowerCase())) {
+      <li>{{ listing.title }} {{ listing._id }}</li>
+      <a [routerLink] = "['/listing-list',listing._id]" >VIEW DETAILS</a>
+    }
+   }
 </ul>
 }
-@else {
-  Loading listings...
+  @else {
+    Loading listings...
 }

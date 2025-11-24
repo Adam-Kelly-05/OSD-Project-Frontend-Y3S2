@@ -1,12 +1,17 @@
 <h2>All Users</h2>
 
+<label for="userIdSearchString">Search User<br></label>
+<input id="userIdSearchString" type="text" [(ngModel)]="searchId" placeholder="Enter users ID"/>
+
 @if (users$ | async; as users) {
 
 <ul>
   @for (user of users; track user._id) {
-    <li>{{ user.name }} {{ user._id }}</li>
+    @if (!searchId || (user._id || '').toLowerCase().includes(searchId.toLowerCase())) {
+      <li>{{ user.name }} {{ user._id }}</li>
 
-    <a [routerLink] = "['/user-list',user._id]" >VIEW DETAILS</a>
+      <a [routerLink] = "['/user-list',user._id]" >VIEW DETAILS</a>
+    }
   }
 </ul>
 }
