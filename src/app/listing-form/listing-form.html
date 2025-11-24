@@ -26,12 +26,8 @@
 		<mat-form-field>
 			<mat-label for="listingPrice">Price:</mat-label>
 			<input id="listingPrice" type="number" formControlName="price" matInput/>
+			<mat-error>Input Required</mat-error>
 		</mat-form-field>
-		<div>
-			@if(price?.hasError('invalidPrice') && price?.touched) {
-				<mat-error>Please enter a price between 0 and 1 Billion non-inclusive</mat-error>
-			}
-		</div>
 		<mat-form-field>
 			<mat-label for="listingPosterUser">Your User Id:</mat-label>
 			<input id="listingPosterUser" type="text" formControlName="posterUser" matInput/>

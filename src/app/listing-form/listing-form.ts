@@ -46,7 +46,7 @@ export class ListingForm {
     this.listingForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(12)]],
-      image: ['', [Validators.required, linkValidator()]],
+      image: ['', [Validators.required]],
       price: ['', [Validators.required, priceValidator()]],
       posterUser: ['', [Validators.required, Validators.minLength(24), Validators.maxLength(24)]],
       datePosted: [new Date().toDateString(), Validators.required],
