@@ -7,7 +7,7 @@
 
 <ul>
   @for (user of users; track user._id) {
-    @if (!searchId || (user._id || '').toLowerCase().includes(searchId.toLowerCase())) {
+    @if (!searchId || user._id?.includes(searchId)) {
       <li>{{ user.name }} {{ user._id }}</li>
 
       <a [routerLink] = "['/user-list',user._id]" >VIEW DETAILS</a>

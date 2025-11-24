@@ -6,7 +6,7 @@
 @if (listings$ | async; as listings) {
 <ul>
    @for (listing of listings; track listing._id) {
-    @if (!searchId || listing.title?.toLowerCase()?.includes(searchId.toLowerCase())) {
+    @if (!searchId || listing.title.toLowerCase().includes(searchId.toLowerCase())) {
       <li>{{ listing.title }} {{ listing._id }}</li>
       <a [routerLink] = "['/listing-list',listing._id]" >VIEW DETAILS</a>
     }
