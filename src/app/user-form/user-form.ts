@@ -1,5 +1,13 @@
 import { Component, effect, inject, input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -7,7 +15,7 @@ import { MatCard } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.interface';
-import { V } from '@angular/cdk/keycodes';
+import { dateInFutureValidator } from '../../validators/dateInFutureValidator';
 
 @Component({
   selector: 'app-user-form',
@@ -39,12 +47,9 @@ export class UserForm {
 
     this.userForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
-      phonenumber: [
-        '',
-        [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)],
-      ],
+      phonenumber: [ '', [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-      dob: ['', Validators.required],
+      dob: ['', [Validators.required, dateInFutureValidator()]],
     });
 
     effect(() => {
@@ -60,11 +65,11 @@ export class UserForm {
     });
   }
 
-  // ChatGPT helped me write this function
   onSubmit() {
     console.log('forms submitted with ');
     console.table(this.userForm.value);
 
+    // ChatGPT helped me write this function
     const currentUser = this.user();
     const formValues = this.userForm.value as User & { dob?: string };
     const normalizedValues: User = {
