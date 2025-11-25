@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { User } from './user.interface';
 import { UserService } from './user.service';
+import { MatCard, MatCardTitle, MatCardContent } from "@angular/material/card";
 
 @Component({
   selector: 'app-users',
-  imports: [AsyncPipe, RouterLink, FormsModule],
+  imports: [AsyncPipe, RouterLink, FormsModule, MatCard, MatCardTitle, MatCardContent],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })

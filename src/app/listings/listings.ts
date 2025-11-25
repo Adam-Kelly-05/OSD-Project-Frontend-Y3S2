@@ -5,10 +5,11 @@ import { Listing } from './listing.interface';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatCard, MatCardTitle, MatCardContent } from "@angular/material/card";
 
 @Component({
   selector: 'app-listings',
-  imports: [AsyncPipe, RouterLink, FormsModule],
+  imports: [AsyncPipe, RouterLink, FormsModule, MatCard, MatCardTitle, MatCardContent],
   templateUrl: './listings.html',
   styleUrl: './listings.scss',
 })
