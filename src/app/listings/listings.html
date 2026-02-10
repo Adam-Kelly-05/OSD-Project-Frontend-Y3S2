@@ -1,25 +1,29 @@
 <h2>All Listings</h2>
 
-<label for="listingSearchString">Search Listing<br></label>
-<input id="listingSearchString" type="text" [(ngModel)]="searchId" placeholder="Enter listing title"/>
+<label for="listingSearchString">Search Listing<br /></label>
+<input
+  id="listingSearchString"
+  type="text"
+  [(ngModel)]="searchId"
+  placeholder="Enter listing title"
+/>
 
 @if (listings$ | async; as listings) {
-<ul>
-   @for (listing of listings; track listing._id) {
-    @if (!searchId || listing.title.toLowerCase().includes(searchId.toLowerCase())) {
-      <mat-card>
-        <mat-card-title>{{ listing.title }}</mat-card-title>
-        <mat-card-content>
-          <img src="{{ listing.image }}" style="width: 10%;">
-          <p>€{{ listing.price }}</p>
-          <a [routerLink] = "['/listing-list',listing._id]" >VIEW DETAILS</a>
-        </mat-card-content>
-      </mat-card>
-      <br>
+  <ul>
+    @for (listing of listings; track listing._id) {
+      @if (!searchId || listing.title.toLowerCase().includes(searchId.toLowerCase())) {
+        <mat-card>
+          <mat-card-title>{{ listing.title }}</mat-card-title>
+          <mat-card-content>
+            <img src="{{ listing.image }}" style="width: 10%" />
+            <p>€{{ listing.price }}</p>
+            <a [routerLink]="['/listing-list', listing._id]">VIEW DETAILS</a>
+          </mat-card-content>
+        </mat-card>
+        <br />
+      }
     }
-   }
-</ul>
-}
-  @else {
-    Loading listings...
+  </ul>
+} @else {
+  Loading listings...
 }

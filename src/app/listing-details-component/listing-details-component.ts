@@ -1,19 +1,27 @@
-import { AsyncPipe } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { ListingService } from "../listings/listing.service";
-import { Listing } from "../listings/listing.interface";
-import { Observable } from "rxjs";
-import { MatCard, MatCardContent, MatCardTitle } from "@angular/material/card";
-import { MatFormField } from "@angular/material/input";
-import { ListingForm } from "../listing-form/listing-form";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { ConfirmDialogComponent } from "../shared/confirm-dialog/confirm-dialog";
-import { MatDialog } from "@angular/material/dialog";
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ListingService } from '../listings/listing.service';
+import { Listing } from '../listings/listing.interface';
+import { Observable } from 'rxjs';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { ListingForm } from '../listing-form/listing-form';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-user-details-component',
-  imports: [RouterModule, AsyncPipe, MatCard, MatCardContent, MatCardTitle, ListingForm],
+  selector: 'app-listing-details-component',
+  imports: [
+    RouterModule,
+    AsyncPipe,
+    MatCard,
+    MatCardContent,
+    MatCardTitle,
+    ListingForm,
+    MatDialogModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './listing-details-component.html',
   styleUrl: './listing-details-component.scss',
 })
@@ -35,45 +43,44 @@ export class ListingDetailsComponent {
     }
   }
 
-    deleteListing() {
-      this.openConfirmDeleteDialog();
-    }
+  deleteListing() {
+    this.openConfirmDeleteDialog();
+  }
 
-    openConfirmDeleteDialog(): void {
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '450px',
-        data: {
-          title: "Delete Listing",
-          message: "Are you sure you want to delete a listing"
-        }
-      });
+  openConfirmDeleteDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '450px',
+      data: {
+        title: 'Delete Listing',
+        message: 'Are you sure you want to delete a listing',
+      },
+    });
 
-      dialogRef.afterClosed().subscribe((result: any) => {
-        if (result) {
-          // User clicked "Yes", perform the delete operation
-          this.deleteItem();
-        }
-      });
-    }
-
-    deleteItem(): void {
-      if (this.id) {
-        this.listingService.deleteListing(this.id)
-          .subscribe({
-            next: response => {
-              this.router.navigateByUrl('/listing-list')
-            },
-            error: (message) => {
-              this.openErrorSnackBar(message);
-            }
-          })
+    dialogRef.afterClosed().subscribe((result: boolean | undefined) => {
+      if (result) {
+        // User clicked "Yes", perform the delete operation
+        this.deleteItem();
       }
-    }
+    });
+  }
 
-    openErrorSnackBar(message: string): void {
-      this.snackBar.open(message, 'Dismiss', {
-        duration: 15000, // Set the duration for how long the snackbar should be visible (in milliseconds)
-        panelClass: ['error-snackbar'], // You can define custom styles for the snackbar
+  deleteItem(): void {
+    if (this.id) {
+      this.listingService.deleteListing(this.id).subscribe({
+        next: () => {
+          this.router.navigateByUrl('/listing-list');
+        },
+        error: (error: Error) => {
+          this.openErrorSnackBar(error.message);
+        },
       });
     }
   }
+
+  openErrorSnackBar(message: string): void {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 15000, // Set the duration for how long the snackbar should be visible (in milliseconds)
+      panelClass: ['error-snackbar'], // You can define custom styles for the snackbar
+    });
+  }
+}

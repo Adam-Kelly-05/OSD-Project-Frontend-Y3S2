@@ -18,18 +18,17 @@ export class UserService {
   }
 
   getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
+    return this.http.get<User>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
   }
 
   updateUser(id: string, user: User): Observable<User> {
-    console.log('subscribing to update/' + id);
-    let uri = `${this.apiUrl}/${id}`;
+    const uri = `${this.apiUrl}/${id}`;
     return this.http.put<User>(uri, user).pipe(catchError(this.handleError));
   }
 
-  deleteUser(id: string) {
-    let uri = `${this.apiUrl}/${id}`;
-    return this.http.delete<User>(uri).pipe(catchError(this.handleError));
+  deleteUser(id: string): Observable<{ message?: string }> {
+    const uri = `${this.apiUrl}/${id}`;
+    return this.http.delete<{ message?: string }>(uri).pipe(catchError(this.handleError));
   }
 
   addUser(user: User): Observable<User> {
@@ -37,15 +36,17 @@ export class UserService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Backend returned code ${error.status}, body was: `, error.error);
+    if (error.error && typeof error.error === 'object' && 'message' in error.error) {
+      return throwError(() => new Error(String(error.error.message)));
     }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    if (typeof error.error === 'string' && error.error.trim()) {
+      return throwError(() => new Error(error.error));
+    }
+    if (error.status === 0) {
+      return throwError(
+        () => new Error('Network error. Please check your connection and try again.'),
+      );
+    }
+    return throwError(() => new Error(`Request failed (${error.status}). Please try again.`));
   }
 }

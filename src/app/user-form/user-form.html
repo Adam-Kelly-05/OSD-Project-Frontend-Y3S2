@@ -1,61 +1,61 @@
 <mat-card>
-		<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="userForm">
-			<mat-form-field>
-				<mat-label for="userName">Name:</mat-label>
-				<input id="userName" type="text" formControlName="name" matInput/>
-			</mat-form-field>
-			<div>
-				@if(name?.hasError('required') && name?.touched) {
-					<mat-error>Input Required</mat-error>
-				}
-			</div>
-			<div>
-				@if(name?.hasError('maxlength') && name?.touched) {
-					<mat-error>Name cannot exceed 100 characters</mat-error>
-				}
-			</div>
-			<mat-form-field>
-				<mat-label for="userPhoneNumber">Phone Number:</mat-label>
-				<input id="userPhoneNumber" type="text" formControlName="phonenumber" matInput/>
-			</mat-form-field>
-			<div>
-				@if(name?.hasError('required') && name?.touched) {
-					<mat-error>Input Required</mat-error>
-				}
-				@if(phonenumber?.hasError('minlength') && phonenumber?.touched) {
-					<mat-error>Phone number must be at least 14 characters</mat-error>
-				}
-				@if(phonenumber?.hasError('pattern') && phonenumber?.touched) {
-					<mat-error>Phone number must start with +353</mat-error>
-				}
-			</div>
-			<mat-form-field>
-				<mat-label for="userEmail">Email:</mat-label>
-				<input id="userEmail" type="email" formControlName="email" matInput/>
-				@if(email?.hasError('required') && email?.touched) {
-					<mat-error>Input Required</mat-error>
-				}
-			</mat-form-field>
-			<div>
-				@if(email?.hasError('email') && email?.touched) {
-					<mat-error>Enter a valid email address</mat-error>
-				}
-				@if(email?.hasError('maxlength') && email?.touched) {
-					<mat-error>Email cannot exceed 100 characters</mat-error>
-				}
-			</div>
-			<mat-form-field>
-				<mat-label for="userDob">Date of Birth:</mat-label>
-				<input id="userDob" type="date" formControlName="dob" matInput/>
-			</mat-form-field>
-			<div>
-				@if(dob?.hasError('required') && dob?.touched) {
-					<mat-error>Input Required</mat-error>
-				}
-				@if(dob?.hasError('futureDate') && dob?.touched) {
-					<mat-error>Date of Birth cannot be in the future</mat-error>
-				}
-			</div>
-			<button type="submit" [disabled]="userForm.invalid" matButton="outlined">Submit</button>
-		</form>
-	</mat-card>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="userForm">
+    <mat-form-field>
+      <mat-label for="userName">Name:</mat-label>
+      <input id="userName" type="text" formControlName="name" matInput />
+    </mat-form-field>
+    <div>
+      @if (name?.hasError('required') && name?.touched) {
+        <mat-error>Input Required</mat-error>
+      }
+    </div>
+    <div>
+      @if (name?.hasError('maxlength') && name?.touched) {
+        <mat-error>Name cannot exceed 100 characters</mat-error>
+      }
+    </div>
+    <mat-form-field>
+      <mat-label for="userPhoneNumber">Phone Number:</mat-label>
+      <input id="userPhoneNumber" type="text" formControlName="phonenumber" matInput />
+    </mat-form-field>
+    <div>
+      @if (phonenumber?.hasError('required') && phonenumber?.touched) {
+        <mat-error>Input Required</mat-error>
+      }
+      @if (phonenumber?.hasError('minlength') && phonenumber?.touched) {
+        <mat-error>Phone number must be at least 14 characters</mat-error>
+      }
+      @if (phonenumber?.hasError('pattern') && phonenumber?.touched) {
+        <mat-error>Phone number must start with +353</mat-error>
+      }
+    </div>
+    <mat-form-field>
+      <mat-label for="userEmail">Email:</mat-label>
+      <input id="userEmail" type="email" formControlName="email" matInput />
+      @if (email?.hasError('required') && email?.touched) {
+        <mat-error>Input Required</mat-error>
+      }
+    </mat-form-field>
+    <div>
+      @if (email?.hasError('email') && email?.touched) {
+        <mat-error>Enter a valid email address</mat-error>
+      }
+      @if (email?.hasError('maxlength') && email?.touched) {
+        <mat-error>Email cannot exceed 100 characters</mat-error>
+      }
+    </div>
+    <mat-form-field>
+      <mat-label for="userDob">Date of Birth:</mat-label>
+      <input id="userDob" type="date" formControlName="dob" matInput />
+    </mat-form-field>
+    <div>
+      @if (dob?.hasError('required') && dob?.touched) {
+        <mat-error>Input Required</mat-error>
+      }
+      @if (dob?.hasError('futureDate') && dob?.touched) {
+        <mat-error>Date of Birth cannot be in the future</mat-error>
+      }
+    </div>
+    <button type="submit" [disabled]="userForm.invalid" mat-stroked-button>Submit</button>
+  </form>
+</mat-card>

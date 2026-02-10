@@ -1,25 +1,23 @@
 <h2>All Users</h2>
 
-<label for="userIdSearchString">Search User<br></label>
-<input id="userIdSearchString" type="text" [(ngModel)]="searchId" placeholder="Enter users ID"/>
+<label for="userIdSearchString">Search User<br /></label>
+<input id="userIdSearchString" type="text" [(ngModel)]="searchId" placeholder="Enter users ID" />
 
 @if (users$ | async; as users) {
-
-<ul>
-  @for (user of users; track user._id) {
-    @if (!searchId || user._id?.includes(searchId)) {
-      <mat-card>
-        <mat-card-title>{{ user.name }}</mat-card-title>
-        <mat-card-content>
-          <p>User ID: {{ user._id }}</p>
-          <a [routerLink] = "['/user-list',user._id]" >VIEW DETAILS</a>
-        </mat-card-content>
-      </mat-card>
-      <br>
+  <ul>
+    @for (user of users; track user._id) {
+      @if (!searchId || user._id?.includes(searchId)) {
+        <mat-card>
+          <mat-card-title>{{ user.name }}</mat-card-title>
+          <mat-card-content>
+            <p>User ID: {{ user._id }}</p>
+            <a [routerLink]="['/user-list', user._id]">VIEW DETAILS</a>
+          </mat-card-content>
+        </mat-card>
+        <br />
+      }
     }
-  }
-</ul>
-}
-@else {
+  </ul>
+} @else {
   Loading users...
 }

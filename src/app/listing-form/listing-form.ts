@@ -1,12 +1,5 @@
 import { Component, effect, inject, input } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { linkValidator } from '../../validators/linkValidator';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatLabel, MatInput, MatError } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
@@ -39,17 +32,13 @@ export class ListingForm {
   listingForm: FormGroup;
 
   constructor() {
-    if (this.listing()) {
-      console.log(this.listing()?.title || 'nothing');
-    }
-
     this.listingForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(12)]],
       image: ['', [Validators.required]],
       price: ['', [Validators.required, priceValidator()]],
-      posterUser: ['', [Validators.required, Validators.minLength(24), Validators.maxLength(24)]],
-      datePosted: [new Date().toDateString(), Validators.required],
+      posterUser: ['', [Validators.minLength(24), Validators.maxLength(24)]],
+      datePosted: [new Date().toISOString(), Validators.required],
     });
 
     effect(() => {
@@ -68,38 +57,44 @@ export class ListingForm {
   }
 
   onSubmit() {
-    console.log('forms submitted with ');
-    console.table(this.listingForm.value);
+    if (this.listingForm.invalid) {
+      this.listingForm.markAllAsTouched();
+      return;
+    }
 
     const currentListing = this.listing();
+    const formValues = this.listingForm.value as Listing & { datePosted?: string | Date };
+    const normalizedValues: Listing = {
+      ...formValues,
+      price: Number(formValues.price),
+      datePosted: formValues.datePosted ? new Date(formValues.datePosted) : new Date(),
+    };
 
     if (!currentListing || !currentListing._id) {
-      this.createNew(this.listingForm.value as Listing);
+      this.createNew(normalizedValues);
     } else {
-      this.updateExisting(currentListing._id, this.listingForm.value as Listing);
+      this.updateExisting(currentListing._id, normalizedValues);
     }
   }
 
   updateExisting(id: string, updatedValues: Listing) {
     this.listingService.updateListing(id, { ...updatedValues }).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigateByUrl('/listing-list');
       },
       error: (err: Error) => {
-        console.log(err.message);
-        // this.message = err
+        console.error(err.message);
       },
     });
   }
 
   createNew(formValues: Listing) {
     this.listingService.addListing({ ...formValues }).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigateByUrl('/listing-list');
       },
       error: (err: Error) => {
-        console.log(err.message);
-        // this.message = err
+        console.error(err.message);
       },
     });
   }

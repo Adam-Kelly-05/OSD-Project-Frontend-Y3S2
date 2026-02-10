@@ -1,9 +1,9 @@
 export interface Listing {
-    _id?: string;
-    title: string;
-    description: string;
-    image: string;
-    price: Number;
-    posterUser?: string;
-    datePosted: Date;
-};
+  _id?: string;
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+  posterUser?: string;
+  datePosted: Date;
+}

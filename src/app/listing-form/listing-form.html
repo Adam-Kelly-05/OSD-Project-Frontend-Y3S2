@@ -1,42 +1,38 @@
 <mat-card>
-	<form [formGroup]="listingForm" (ngSubmit)="onSubmit()" class="listing-form">
-		<mat-form-field>
-			<mat-label for="listingTitle">Title:</mat-label>
-			<input id="listingTitle" type="text" formControlName="title" matInput/>
-			<mat-error>Input Required</mat-error>
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label for="listingDescription">Description:</mat-label>
-			<input id="listingDescription" formControlName="description" matInput/>
-		</mat-form-field>
-		<div>
-			@if (description?.invalid && description?.touched) {
-				<mat-error>Description must be at least 12 characters</mat-error>
-			}
-		</div>
-		<mat-form-field>
-			<mat-label for="listingImage">Image URL:</mat-label>
-			<input id="listingImage" type="url" formControlName="image" matInput/>
-		</mat-form-field>
-		<div>
-			@if(image?.hasError('invalidUrl') && image?.touched) {
-				<mat-error>Please enter a valid URL (www.)</mat-error>
-			}
-		</div>
-		<mat-form-field>
-			<mat-label for="listingPrice">Price:</mat-label>
-			<input id="listingPrice" type="number" formControlName="price" matInput/>
-			<mat-error>Input Required</mat-error>
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label for="listingPosterUser">Your User Id:</mat-label>
-			<input id="listingPosterUser" type="text" formControlName="posterUser" matInput/>
-		</mat-form-field>
-		<div>
-			@if(posterUser?.invalid && posterUser?.touched) {
-				<mat-error>Please enter a valid 24 digit user Id</mat-error>
-			}
-		</div>
-		<button type="submit" [disabled]="listingForm.invalid" matButton="outlined">Submit</button>
-	</form>
+  <form [formGroup]="listingForm" (ngSubmit)="onSubmit()" class="listing-form">
+    <mat-form-field>
+      <mat-label for="listingTitle">Title:</mat-label>
+      <input id="listingTitle" type="text" formControlName="title" matInput />
+      <mat-error>Input Required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="listingDescription">Description:</mat-label>
+      <input id="listingDescription" formControlName="description" matInput />
+    </mat-form-field>
+    <div>
+      @if (description?.invalid && description?.touched) {
+        <mat-error>Description must be at least 12 characters</mat-error>
+      }
+    </div>
+    <mat-form-field>
+      <mat-label for="listingImage">Image URL:</mat-label>
+      <input id="listingImage" type="url" formControlName="image" matInput />
+      <mat-error>Input Required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="listingPrice">Price:</mat-label>
+      <input id="listingPrice" type="number" formControlName="price" matInput />
+      <mat-error>Input Required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="listingPosterUser">Your User Id:</mat-label>
+      <input id="listingPosterUser" type="text" formControlName="posterUser" matInput />
+    </mat-form-field>
+    <div>
+      @if (posterUser?.invalid && posterUser?.touched) {
+        <mat-error>Please enter a valid 24 digit user Id</mat-error>
+      }
+    </div>
+    <button type="submit" [disabled]="listingForm.invalid" mat-stroked-button>Submit</button>
+  </form>
 </mat-card>

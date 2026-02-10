@@ -1,13 +1,5 @@
 import { Component, effect, inject, input } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -41,13 +33,12 @@ export class UserForm {
   userForm: FormGroup;
 
   constructor() {
-    if (this.user()) {
-      console.log(this.user()?.name || 'nothing');
-    }
-
     this.userForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
-      phonenumber: [ '', [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)]],
+      phonenumber: [
+        '',
+        [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)],
+      ],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
       dob: ['', [Validators.required, dateInFutureValidator()]],
     });
@@ -66,10 +57,11 @@ export class UserForm {
   }
 
   onSubmit() {
-    console.log('forms submitted with ');
-    console.table(this.userForm.value);
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
 
-    // ChatGPT helped me write this function
     const currentUser = this.user();
     const formValues = this.userForm.value as User & { dob?: string };
     const normalizedValues: User = {
@@ -86,24 +78,22 @@ export class UserForm {
 
   updateExisting(id: string, updatedValues: User) {
     this.userService.updateUser(id, { ...updatedValues }).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigateByUrl('/user-list');
       },
       error: (err: Error) => {
-        console.log(err.message);
-        // this.message = err
+        console.error(err.message);
       },
     });
   }
 
   createNew(formValues: User) {
     this.userService.addUser({ ...formValues }).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigateByUrl('/user-list');
       },
       error: (err: Error) => {
-        console.log(err.message);
-        // this.message = err
+        console.error(err.message);
       },
     });
   }

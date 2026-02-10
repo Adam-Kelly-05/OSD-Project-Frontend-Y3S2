@@ -8,12 +8,12 @@ import { Users } from './users/users';
 import { UserDetailsComponent } from './user-details-component/user-details-component';
 
 export const routes: Routes = [
-    {path: '', component: Home},
-    {path: 'home', redirectTo: '/'},
-    {path: 'listing-list', component: Listings},
-    {path: 'listing-form', component: ListingForm},
-    {path: 'listing-list/:id', component: ListingDetailsComponent},
-    {path: 'user-list', component: Users},
-    {path: 'user-form', component: UserForm},
-    {path: 'user-list/:id', component: UserDetailsComponent},
+  { path: '', component: Home },
+  { path: 'home', redirectTo: '/' },
+  { path: 'listing-list', component: Listings },
+  { path: 'listing-form', component: ListingForm },
+  { path: 'listing-list/:id', component: ListingDetailsComponent },
+  { path: 'user-list', component: Users },
+  { path: 'user-form', component: UserForm },
+  { path: 'user-list/:id', component: UserDetailsComponent },
 ];
