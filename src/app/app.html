@@ -4,6 +4,19 @@
   <a routerLink="/user-form">Create User</a>
   <a routerLink="/listing-list">Listings</a>
   <a routerLink="/listing-form">Create Listing</a>
+
+  <span style="margin-left: auto"></span>
+
+  @if ((isAuthenticated$ | async) === false) {
+    <button (click)="login()">Login</button>
+  }
+
+  @if ((isAuthenticated$ | async) === true) {
+    @if (userData$ | async; as ud) {
+      <span>{{ ud?.userData?.email }}</span>
+    }
+    <button (click)="logout()">Logout</button>
+  }
 </nav>
 
 <router-outlet />
