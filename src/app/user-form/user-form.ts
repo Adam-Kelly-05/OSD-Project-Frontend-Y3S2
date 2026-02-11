@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatCard } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.interface';
 import { dateInFutureValidator } from '../../validators/dateInFutureValidator';
@@ -27,8 +27,10 @@ export class UserForm {
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   user = input<User | undefined>();
+  cognitoSubFromAuth = '';
 
   userForm: FormGroup;
 
@@ -39,7 +41,7 @@ export class UserForm {
         '',
         [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)],
       ],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email, Validators.maxLength(100)]],
       dob: ['', [Validators.required, dateInFutureValidator()]],
     });
 
@@ -54,6 +56,21 @@ export class UserForm {
         });
       }
     });
+
+    const prefillId = this.route.snapshot.queryParamMap.get('id')?.trim() ?? '';
+    const prefillEmail = this.route.snapshot.queryParamMap.get('email')?.trim() ?? '';
+    const prefillName = this.route.snapshot.queryParamMap.get('name')?.trim() ?? '';
+
+    if (prefillId) {
+      this.cognitoSubFromAuth = prefillId;
+    }
+
+    if (!this.user()) {
+      this.userForm.patchValue({
+        email: prefillEmail || this.userForm.get('email')?.value,
+        name: prefillName || this.userForm.get('name')?.value,
+      });
+    }
   }
 
   onSubmit() {
@@ -63,7 +80,7 @@ export class UserForm {
     }
 
     const currentUser = this.user();
-    const formValues = this.userForm.value as User & { dob?: string };
+    const formValues = this.userForm.getRawValue() as User & { dob?: string };
     const normalizedValues: User = {
       ...formValues,
       dob: formValues.dob ? new Date(formValues.dob) : undefined,

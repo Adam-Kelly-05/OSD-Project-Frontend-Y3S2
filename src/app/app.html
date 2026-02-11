@@ -1,9 +1,6 @@
 <nav class="main-nav">
   <a routerLink="/">Home</a>
   <a routerLink="/user-list">Users</a>
-  @if ((isAuthenticated$ | async) === true) {
-    <a routerLink="/user-form">Create User</a>
-  }
   <a routerLink="/listing-list">Listings</a>
   @if ((isAuthenticated$ | async) === true) {
     <a routerLink="/listing-form">Create Listing</a>
@@ -11,10 +8,13 @@
 
   <span style="margin-left: auto"></span>
 
+  @if ((isAuthenticated$ | async) === true) {
+    <a routerLink="/user-form">Edit User</a>
+  }
+
   @if ((isAuthenticated$ | async) === false) {
     <button (click)="login()">Login</button>
   }
-
   @if ((isAuthenticated$ | async) === true) {
     <button (click)="logout()">Logout</button>
   }

@@ -24,15 +24,6 @@
       <input id="listingPrice" type="number" formControlName="price" matInput />
       <mat-error>Input Required</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label for="listingPosterUser">Your User Id:</mat-label>
-      <input id="listingPosterUser" type="text" formControlName="posterUser" matInput />
-    </mat-form-field>
-    <div>
-      @if (posterUser?.invalid && posterUser?.touched) {
-        <mat-error>Please enter a valid 24 digit user Id</mat-error>
-      }
-    </div>
     <button type="submit" [disabled]="listingForm.invalid" mat-stroked-button>Submit</button>
   </form>
 </mat-card>

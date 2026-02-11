@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UserService } from '../users/user.service';
 import { User } from '../users/user.interface';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { UserForm } from '../user-form/user-form';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -20,6 +20,7 @@ import { map } from 'rxjs/operators';
     MatCardTitle,
     MatCardContent,
     AsyncPipe,
+    DatePipe,
     UserForm,
     MatButtonModule,
     MatDialogModule,

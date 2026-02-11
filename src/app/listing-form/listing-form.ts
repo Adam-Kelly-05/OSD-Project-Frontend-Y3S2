@@ -7,6 +7,8 @@ import { priceValidator } from '../../validators/priceValidator';
 import { Listing } from '../listings/listing.interface';
 import { ListingService } from '../listings/listing.service';
 import { Router } from '@angular/router';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-listing-form',
@@ -26,6 +28,7 @@ export class ListingForm {
   private fb = inject(FormBuilder);
   private listingService = inject(ListingService);
   private router = inject(Router);
+  private oidc = inject(OidcSecurityService);
 
   listing = input<Listing | undefined>();
 
@@ -37,7 +40,6 @@ export class ListingForm {
       description: ['', [Validators.required, Validators.minLength(12)]],
       image: ['', [Validators.required]],
       price: ['', [Validators.required, priceValidator()]],
-      posterUser: ['', [Validators.minLength(24), Validators.maxLength(24)]],
       datePosted: [new Date().toISOString(), Validators.required],
     });
 
@@ -49,7 +51,6 @@ export class ListingForm {
           description: listing.description,
           image: listing.image,
           price: listing.price,
-          posterUser: listing.posterUser,
           datePosted: listing.datePosted,
         });
       }
@@ -71,7 +72,19 @@ export class ListingForm {
     };
 
     if (!currentListing || !currentListing._id) {
-      this.createNew(normalizedValues);
+      this.oidc.userData$.pipe(take(1)).subscribe({
+        next: (result) => {
+          const userSub = this.extractUserSub(result);
+          if (!userSub) {
+            console.error('Unable to create listing: authenticated user id (sub) not found.');
+            return;
+          }
+          this.createNew({ ...normalizedValues, posterUser: userSub });
+        },
+        error: (err: Error) => {
+          console.error(err.message);
+        },
+      });
     } else {
       this.updateExisting(currentListing._id, normalizedValues);
     }
@@ -115,7 +128,12 @@ export class ListingForm {
     return this.listingForm.get('price');
   }
 
-  get posterUser() {
-    return this.listingForm.get('posterUser');
+  private extractUserSub(result: unknown): string | undefined {
+    if (!result || typeof result !== 'object') {
+      return undefined;
+    }
+
+    const userDataResult = result as { userData?: { sub?: string }; sub?: string };
+    return userDataResult.userData?.sub ?? userDataResult.sub;
   }
 }

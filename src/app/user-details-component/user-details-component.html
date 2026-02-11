@@ -5,15 +5,14 @@
       {{ user.name }}
     </mat-card-title>
     <mat-card-content>
-      <p>Id: {{ user._id }}</p>
       <p>Phone Number: {{ user.phonenumber }}</p>
       <p>Email: {{ user.email }}</p>
-      <p>Date of Birth: {{ user.dob }}</p>
-      <p>Date Joined: {{ user.dateJoined }}</p>
-      <p>Date Last Updated: {{ user.lastUpdated }}</p>
-      @if (isAuthenticated$ | async) {
+      <p>Date of Birth: {{ user.dob | date: 'mediumDate' }}</p>
+      <p>Date Joined: {{ user.dateJoined | date: 'mediumDate' }}</p>
+      <p>Date Last Updated: {{ user.lastUpdated | date: 'mediumDate' }}</p>
+      <!-- @if (isAuthenticated$ | async) {
         <button mat-flat-button color="error" (click)="deleteUser()">Delete</button>
-      }
+      } -->
     </mat-card-content>
   </mat-card>
   @if (isAuthenticated$ | async) {

@@ -30,21 +30,6 @@
       }
     </div>
     <mat-form-field>
-      <mat-label for="userEmail">Email:</mat-label>
-      <input id="userEmail" type="email" formControlName="email" matInput />
-      @if (email?.hasError('required') && email?.touched) {
-        <mat-error>Input Required</mat-error>
-      }
-    </mat-form-field>
-    <div>
-      @if (email?.hasError('email') && email?.touched) {
-        <mat-error>Enter a valid email address</mat-error>
-      }
-      @if (email?.hasError('maxlength') && email?.touched) {
-        <mat-error>Email cannot exceed 100 characters</mat-error>
-      }
-    </div>
-    <mat-form-field>
       <mat-label for="userDob">Date of Birth:</mat-label>
       <input id="userDob" type="date" formControlName="dob" matInput />
     </mat-form-field>
