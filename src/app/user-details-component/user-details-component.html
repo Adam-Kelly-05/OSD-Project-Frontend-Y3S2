@@ -11,8 +11,12 @@
       <p>Date of Birth: {{ user.dob }}</p>
       <p>Date Joined: {{ user.dateJoined }}</p>
       <p>Date Last Updated: {{ user.lastUpdated }}</p>
-      <button mat-flat-button color="error" (click)="deleteUser()">Delete</button>
+      @if (isAuthenticated$ | async) {
+        <button mat-flat-button color="error" (click)="deleteUser()">Delete</button>
+      }
     </mat-card-content>
   </mat-card>
-  <app-user-form [user]="user"></app-user-form>
+  @if (isAuthenticated$ | async) {
+    <app-user-form [user]="user"></app-user-form>
+  }
 }

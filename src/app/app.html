@@ -1,9 +1,13 @@
 <nav class="main-nav">
   <a routerLink="/">Home</a>
   <a routerLink="/user-list">Users</a>
-  <a routerLink="/user-form">Create User</a>
+  @if ((isAuthenticated$ | async) === true) {
+    <a routerLink="/user-form">Create User</a>
+  }
   <a routerLink="/listing-list">Listings</a>
-  <a routerLink="/listing-form">Create Listing</a>
+  @if ((isAuthenticated$ | async) === true) {
+    <a routerLink="/listing-form">Create Listing</a>
+  }
 
   <span style="margin-left: auto"></span>
 
@@ -12,9 +16,6 @@
   }
 
   @if ((isAuthenticated$ | async) === true) {
-    @if (userData$ | async; as ud) {
-      <span>{{ ud?.userData?.email }}</span>
-    }
     <button (click)="logout()">Logout</button>
   }
 </nav>

@@ -23,16 +23,7 @@ export class App {
   }
 
   login() {
-    const redirect = 'http://localhost:4200/auth/callback';
-    const clientId = 'kpb76hp7r9afkr0gupoj1k7gn';
-    const scope = 'email openid profile';
-
-    window.location.href =
-      'https://eu-west-1lhleemolf.auth.eu-west-1.amazoncognito.com/login' +
-      `?client_id=${clientId}` +
-      `&response_type=code` +
-      `&scope=${encodeURIComponent(scope)}` +
-      `&redirect_uri=${encodeURIComponent(redirect)}`;
+    this.oidc.authorize();
   }
 
   logout() {

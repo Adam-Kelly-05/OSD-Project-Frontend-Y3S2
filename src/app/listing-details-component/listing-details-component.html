@@ -11,8 +11,12 @@
       <p>Price: {{ listing.price }}</p>
       <p>Posted by User Id: {{ listing.posterUser }}</p>
       <p>Date posted: {{ listing.datePosted }}</p>
-      <button mat-flat-button color="error" (click)="deleteListing()">Delete</button>
+      @if (isAuthenticated$ | async) {
+        <button mat-flat-button color="error" (click)="deleteListing()">Delete</button>
+      }
     </mat-card-content>
   </mat-card>
-  <app-listing-form [listing]="listing"></app-listing-form>
+  @if (isAuthenticated$ | async) {
+    <app-listing-form [listing]="listing"></app-listing-form>
+  }
 }

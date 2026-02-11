@@ -7,15 +7,16 @@ import { UserForm } from './user-form/user-form';
 import { Users } from './users/users';
 import { UserDetailsComponent } from './user-details-component/user-details-component';
 import { AuthCallbackComponent } from './auth/auth-callback.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'home', redirectTo: '/' },
   { path: 'auth/callback', component: AuthCallbackComponent },
   { path: 'listing-list', component: Listings },
-  { path: 'listing-form', component: ListingForm },
+  { path: 'listing-form', component: ListingForm, canActivate: [authGuard] },
   { path: 'listing-list/:id', component: ListingDetailsComponent },
   { path: 'user-list', component: Users },
-  { path: 'user-form', component: UserForm },
+  { path: 'user-form', component: UserForm, canActivate: [authGuard] },
   { path: 'user-list/:id', component: UserDetailsComponent },
 ];

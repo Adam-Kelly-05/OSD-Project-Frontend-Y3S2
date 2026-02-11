@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-details-component',
@@ -31,11 +33,13 @@ export class UserDetailsComponent {
   private userService = inject(UserService);
   private router = inject(Router);
   public dialog = inject(MatDialog);
+  private oidc = inject(OidcSecurityService);
 
   constructor(private snackBar: MatSnackBar) {}
 
   id: string = '';
   user$: Observable<User> | undefined;
+  isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';

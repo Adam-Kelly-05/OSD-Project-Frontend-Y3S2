@@ -9,6 +9,8 @@ import { ListingForm } from '../listing-form/listing-form';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-listing-details-component',
@@ -30,10 +32,12 @@ export class ListingDetailsComponent {
   private listingService = inject(ListingService);
   private router = inject(Router);
   public dialog = inject(MatDialog);
+  private oidc = inject(OidcSecurityService);
 
   id: string = '';
   constructor(private snackBar: MatSnackBar) {}
   listing$: Observable<Listing> | undefined;
+  isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';
