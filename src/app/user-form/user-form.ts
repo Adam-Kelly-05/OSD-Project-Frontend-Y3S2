@@ -108,7 +108,11 @@ export class UserForm {
   }
 
   createNew(formValues: User) {
-    this.userService.addUser({ ...formValues }).subscribe({
+    const payload: User = this.cognitoSubFromAuth
+      ? { ...formValues, _id: this.cognitoSubFromAuth }
+      : { ...formValues };
+
+    this.userService.addUser(payload).subscribe({
       next: () => {
         this.router.navigateByUrl('/user-list');
       },

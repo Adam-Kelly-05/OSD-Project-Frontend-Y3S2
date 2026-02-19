@@ -18,4 +18,15 @@
   @if (isAuthenticated$ | async) {
     <app-user-form [user]="user"></app-user-form>
   }
+  @if (user.latitude != null && user.longitude != null) {
+    <mat-card>
+      <mat-card-content>
+        <app-map
+          [latitude]="user.latitude"
+          [longitude]="user.longitude"
+          [markerLabel]="user.name"
+        ></app-map>
+      </mat-card-content>
+    </mat-card>
+  }
 }

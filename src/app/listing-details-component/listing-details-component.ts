@@ -6,11 +6,12 @@ import { Listing } from '../listings/listing.interface';
 import { Observable, combineLatest, of } from 'rxjs';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { ListingForm } from '../listing-form/listing-form';
+import { MapComponent } from '../map/map';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { map, take } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-listing-details-component',
@@ -22,6 +23,7 @@ import { map, take } from 'rxjs/operators';
     MatCardContent,
     MatCardTitle,
     ListingForm,
+    MapComponent,
     MatDialogModule,
     MatSnackBarModule,
   ],
@@ -32,10 +34,10 @@ export class ListingDetailsComponent {
   private route = inject(ActivatedRoute);
   private listingService = inject(ListingService);
   private router = inject(Router);
-  public dialog = inject(MatDialog);
+  private dialog = inject(MatDialog);
   private oidc = inject(OidcSecurityService);
 
-  id: string = '';
+  id = '';
   constructor(private snackBar: MatSnackBar) {}
   listing$: Observable<Listing> | undefined;
   canEditListing$: Observable<boolean> = of(false);
@@ -44,7 +46,7 @@ export class ListingDetailsComponent {
     this.id = this.route.snapshot.paramMap.get('id') || '';
 
     if (this.id) {
-      this.listing$ = this.listingService.getListingById(this.id);
+      this.listing$ = this.listingService.getListingById(this.id).pipe(shareReplay(1));
       this.canEditListing$ = combineLatest([this.listing$, this.oidc.userData$]).pipe(
         map(([listing, userDataResult]) => {
           const userSub = this.extractUserSub(userDataResult);
@@ -75,7 +77,6 @@ export class ListingDetailsComponent {
 
     dialogRef.afterClosed().subscribe((result: boolean | undefined) => {
       if (result) {
-        // User clicked "Yes", perform the delete operation
         this.deleteItem();
       }
     });
@@ -103,8 +104,8 @@ export class ListingDetailsComponent {
 
   openErrorSnackBar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
-      duration: 15000, // Set the duration for how long the snackbar should be visible (in milliseconds)
-      panelClass: ['error-snackbar'], // You can define custom styles for the snackbar
+      duration: 15000,
+      panelClass: ['error-snackbar'],
     });
   }
 

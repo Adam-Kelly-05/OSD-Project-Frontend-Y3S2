@@ -12,6 +12,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog'
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { map } from 'rxjs/operators';
+import { MapComponent } from '../map/map';
 
 @Component({
   selector: 'app-user-details-component',
@@ -22,6 +23,7 @@ import { map } from 'rxjs/operators';
     AsyncPipe,
     DatePipe,
     UserForm,
+    MapComponent,
     MatButtonModule,
     MatDialogModule,
     MatSnackBarModule,

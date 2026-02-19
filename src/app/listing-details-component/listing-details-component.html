@@ -21,4 +21,13 @@
   @if (canEditListing$ | async) {
     <app-listing-form [listing]="listing"></app-listing-form>
   }
+  <mat-card>
+    <mat-card-content>
+      <app-map
+        [latitude]="listing.latitude"
+        [longitude]="listing.longitude"
+        [markerLabel]="listing.title"
+      ></app-map>
+    </mat-card-content>
+  </mat-card>
 }
