@@ -5,13 +5,13 @@
 
 @if (users$ | async; as users) {
   <ul>
-    @for (user of users; track user.id) {
-      @if (!searchId || user.id?.includes(searchId)) {
+    @for (user of users; track user._id) {
+      @if (!searchId || user._id?.includes(searchId)) {
         <mat-card>
           <mat-card-title>{{ user.name }}</mat-card-title>
           <mat-card-content>
-            <p>User ID: {{ user.id }}</p>
-            <a [routerLink]="['/user-list', user.id]">VIEW DETAILS</a>
+            <p>User ID: {{ user._id }}</p>
+            <a [routerLink]="['/user-list', user._id]">VIEW DETAILS</a>
           </mat-card-content>
         </mat-card>
         <br />

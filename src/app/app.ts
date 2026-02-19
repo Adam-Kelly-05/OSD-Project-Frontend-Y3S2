@@ -41,14 +41,14 @@ export class App {
 
               return this.userService.getUsers().pipe(
                 map((users) => {
-                  const existingUser = users.find((u) => u.id === userSub);
+                  const existingUser = users.find((u) => u._id === userSub);
                   if (existingUser) {
                     return null;
                   }
 
                   const claims = this.extractClaims(userDataResult);
                   return {
-                    id: userSub,
+                    _id: userSub,
                     email: claims.email,
                     name:
                       claims.name ||
@@ -69,7 +69,7 @@ export class App {
 
         this.router.navigate(['/user-form'], {
           queryParams: {
-            id: missingUserData.id,
+            _id: missingUserData._id,
             email: missingUserData.email ?? '',
             name: missingUserData.name ?? '',
           },

@@ -71,7 +71,7 @@ export class ListingForm {
       datePosted: formValues.datePosted ? new Date(formValues.datePosted) : new Date(),
     };
 
-    if (!currentListing || !currentListing.id) {
+    if (!currentListing || !currentListing._id) {
       this.oidc.userData$.pipe(take(1)).subscribe({
         next: (result) => {
           const userSub = this.extractUserSub(result);
@@ -86,7 +86,7 @@ export class ListingForm {
         },
       });
     } else {
-      this.updateExisting(currentListing.id, normalizedValues);
+      this.updateExisting(currentListing._id, normalizedValues);
     }
   }
 

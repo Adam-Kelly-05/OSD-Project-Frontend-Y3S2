@@ -60,7 +60,7 @@ export class UserForm {
       }
     });
 
-    const prefillId = this.route.snapshot.queryParamMap.get('id')?.trim() ?? '';
+    const prefillId = this.route.snapshot.queryParamMap.get('_id')?.trim() ?? '';
     const prefillEmail = this.route.snapshot.queryParamMap.get('email')?.trim() ?? '';
     const prefillName = this.route.snapshot.queryParamMap.get('name')?.trim() ?? '';
 
@@ -89,10 +89,10 @@ export class UserForm {
       dob: new Date(formValues.dob),
     };
 
-    if (!currentUser || !currentUser.id) {
+    if (!currentUser || !currentUser._id) {
       this.createNew(normalizedValues);
     } else {
-      this.updateExisting(currentUser.id, normalizedValues);
+      this.updateExisting(currentUser._id, normalizedValues);
     }
   }
 
