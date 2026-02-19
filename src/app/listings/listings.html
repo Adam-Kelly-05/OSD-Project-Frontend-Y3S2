@@ -10,14 +10,14 @@
 
 @if (listings$ | async; as listings) {
   <ul>
-    @for (listing of listings; track listing._id) {
+    @for (listing of listings; track listing.id) {
       @if (!searchId || listing.title.toLowerCase().includes(searchId.toLowerCase())) {
         <mat-card>
           <mat-card-title>{{ listing.title }}</mat-card-title>
           <mat-card-content>
             <img src="{{ listing.image }}" style="width: 10%" />
             <p>€{{ listing.price }}</p>
-            <a [routerLink]="['/listing-list', listing._id]">VIEW DETAILS</a>
+            <a [routerLink]="['/listing-list', listing.id]">VIEW DETAILS</a>
           </mat-card-content>
         </mat-card>
         <br />

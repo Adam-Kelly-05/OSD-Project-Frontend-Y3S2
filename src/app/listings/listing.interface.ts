@@ -1,9 +1,11 @@
 export interface Listing {
-  _id?: string;
+  id?: string;
   title: string;
   description: string;
   image: string;
-  price: number;
+  price: Number;
   posterUser?: string;
+  latitude?: number;
+  longitude?: number;
   datePosted: Date;
 }

@@ -41,7 +41,7 @@ export class App {
 
               return this.userService.getUsers().pipe(
                 map((users) => {
-                  const existingUser = users.find((u) => u._id === userSub);
+                  const existingUser = users.find((u) => u.id === userSub);
                   if (existingUser) {
                     return null;
                   }

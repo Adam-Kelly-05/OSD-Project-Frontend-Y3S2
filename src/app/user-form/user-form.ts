@@ -41,7 +41,10 @@ export class UserForm {
         '',
         [Validators.required, Validators.minLength(14), Validators.pattern(/^\+353/)],
       ],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email, Validators.maxLength(100)]],
+      email: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.email, Validators.maxLength(100)],
+      ],
       dob: ['', [Validators.required, dateInFutureValidator()]],
     });
 
@@ -80,16 +83,16 @@ export class UserForm {
     }
 
     const currentUser = this.user();
-    const formValues = this.userForm.getRawValue() as User & { dob?: string };
+    const formValues = this.userForm.getRawValue() as Omit<User, 'dob'> & { dob: string };
     const normalizedValues: User = {
       ...formValues,
-      dob: formValues.dob ? new Date(formValues.dob) : undefined,
+      dob: new Date(formValues.dob),
     };
 
-    if (!currentUser || !currentUser._id) {
+    if (!currentUser || !currentUser.id) {
       this.createNew(normalizedValues);
     } else {
-      this.updateExisting(currentUser._id, normalizedValues);
+      this.updateExisting(currentUser.id, normalizedValues);
     }
   }
 
