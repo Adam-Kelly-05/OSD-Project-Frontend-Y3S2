@@ -1,33 +1,46 @@
-<h1>Listing Details</h1>
 @if (listing$ | async; as listing) {
-  <mat-card>
-    <mat-card-title>
-      {{ listing.title }}
-    </mat-card-title>
-    <mat-card-content>
-      <p>Description: {{ listing.description }}</p>
-      <img [src]="listing.image" alt="{{ listing.title }}" width="200" />
-      <p>Price: {{ listing.price }}</p>
-      <p>Date posted: {{ listing.datePosted | date: 'mediumDate' }}</p>
-      <button>
-        <a [routerLink]="['/user-list', listing.posterUser]">Click to view poster</a>
-      </button>
-      <br /><br />
-      @if (canEditListing$ | async) {
-        <button mat-flat-button color="error" (click)="deleteListing()">Delete</button>
-      }
-    </mat-card-content>
-  </mat-card>
-  @if (canEditListing$ | async) {
-    <app-listing-form [listing]="listing"></app-listing-form>
-  }
-  <mat-card>
-    <mat-card-content>
-      <app-map
-        [latitude]="listing.latitude"
-        [longitude]="listing.longitude"
-        [markerLabel]="listing.title"
-      ></app-map>
-    </mat-card-content>
-  </mat-card>
+  <div class="listing-page">
+    <h1 class="listing-title">{{ listing.title }}</h1>
+    <div class="viewport-layout">
+      <div class="left-column">
+        <div class="left-row">
+          <div class="card h-100">
+            <div class="card-body h-100 map-card-content">
+              <h3>{{ listing.description }}</h3>
+              <p>€{{ listing.price }}</p>
+              <p>Date posted: {{ listing.datePosted | date: 'mediumDate' }}</p>
+              <button>
+                <a [routerLink]="['/user-list', listing.posterUser]">Click to view poster</a>
+              </button>
+              <br /><br />
+              @if (canEditListing$ | async) {
+                <button mat-flat-button color="error" (click)="deleteListing()">Delete</button>
+              }
+              @if (canEditListing$ | async) {
+                <app-listing-form [listing]="listing"></app-listing-form>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="left-row">
+          <div class="card h-100">
+            <div class="card-body h-100">
+              <app-map
+                [latitude]="listing.latitude"
+                [longitude]="listing.longitude"
+                [markerLabel]="listing.title"
+              ></app-map>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <div class="card h-100">
+          <img class="listing-image" [src]="listing.image" alt="{{ listing.title }}" />
+        </div>
+      </div>
+    </div>
+  </div>
 }

@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ListingService } from '../listings/listing.service';
 import { Listing } from '../listings/listing.interface';
 import { Observable, combineLatest, of } from 'rxjs';
-import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { ListingForm } from '../listing-form/listing-form';
 import { MapComponent } from '../map/map';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -19,9 +18,6 @@ import { map, shareReplay, take } from 'rxjs/operators';
     RouterModule,
     AsyncPipe,
     DatePipe,
-    MatCard,
-    MatCardContent,
-    MatCardTitle,
     ListingForm,
     MapComponent,
     MatDialogModule,

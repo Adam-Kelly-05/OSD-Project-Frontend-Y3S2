@@ -63,9 +63,7 @@ export class MapComponent implements OnChanges, OnDestroy {
       this.mapInstance.remove();
     }
 
-    const map = leaflet
-      .map(this.mapContainer.nativeElement)
-      .setView([latitude, longitude], 13);
+    const map = leaflet.map(this.mapContainer.nativeElement).setView([latitude, longitude], 13);
     this.mapInstance = map;
 
     leaflet
