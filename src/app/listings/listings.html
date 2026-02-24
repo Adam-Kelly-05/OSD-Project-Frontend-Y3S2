@@ -9,21 +9,19 @@
 />
 
 @if (listings$ | async; as listings) {
-  <ul>
+  <div class="listings-grid">
     @for (listing of listings; track listing._id) {
       @if (!searchId || listing.title.toLowerCase().includes(searchId.toLowerCase())) {
-        <mat-card>
-          <mat-card-title>{{ listing.title }}</mat-card-title>
+        <mat-card [routerLink]="['/listing-list', listing._id]" style="cursor: pointer">
           <mat-card-content>
-            <img src="{{ listing.image }}" style="width: 10%" />
-            <p>€{{ listing.price }}</p>
-            <a [routerLink]="['/listing-list', listing._id]">VIEW DETAILS</a>
+            <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
+            <mat-card-title>{{ listing.title }}</mat-card-title>
+            <p class="listing-price">€{{ listing.price }}</p>
           </mat-card-content>
         </mat-card>
-        <br />
       }
     }
-  </ul>
+  </div>
 } @else {
   Loading listings...
 }

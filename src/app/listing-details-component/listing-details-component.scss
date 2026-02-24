@@ -8,48 +8,26 @@
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
-  min-height: 0;
 }
 
-.viewport-layout {
+.columns,
+.left-column {
   display: grid;
+  gap: 1%;
+}
+
+.columns {
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: 0.5rem;
+  padding: 1%;
   min-height: 0;
-  overflow: hidden;
 }
 
 .left-column {
-  display: grid;
   grid-template-rows: 1fr 1fr;
-  gap: 1rem;
-  min-height: 0;
 }
 
-.left-column,
-.right-column,
-.left-row,
-.card,
-.card-body {
-  min-height: 0;
-}
-
-.left-column,
-.right-column,
-.card,
-.card-body {
+.panel {
   overflow: hidden;
-}
-
-.listing-title {
-  margin: 0;
-  text-align: center;
-}
-
-.card {
-  background: transparent;
-  color: inherit;
 }
 
 .listing-image {
