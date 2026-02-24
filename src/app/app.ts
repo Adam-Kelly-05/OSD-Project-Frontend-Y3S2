@@ -5,10 +5,12 @@ import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { UserService } from './users/user.service';
 import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { ListingSearchState } from './listings/listing-search.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, AsyncPipe],
+  imports: [RouterOutlet, RouterLink, AsyncPipe, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -18,6 +20,7 @@ export class App {
   private oidc = inject(OidcSecurityService);
   private userService = inject(UserService);
   private router = inject(Router);
+  protected listingSearch = inject(ListingSearchState);
 
   isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
   userData$ = this.oidc.userData$;
