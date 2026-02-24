@@ -16,5 +16,6 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 export class Users {
   private dataService = inject(UserService);
   users$: Observable<User[]> = this.dataService.getUsers();
-  searchId = '';
+
+  protected readonly defaultProfilePicture = '/defaultProfilePicture.jpg';
 }

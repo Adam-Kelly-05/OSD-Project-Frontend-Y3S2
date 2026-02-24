@@ -45,6 +45,7 @@ export class UserForm {
         { value: '', disabled: true },
         [Validators.required, Validators.email, Validators.maxLength(100)],
       ],
+      profilePicture: [''],
       dob: ['', [Validators.required, dateInFutureValidator()]],
     });
 
@@ -55,6 +56,7 @@ export class UserForm {
           name: user.name,
           phonenumber: user.phonenumber,
           email: user.email,
+          profilePicture: user.profilePicture ?? '',
           dob: this.formatDateForInput(user.dob),
         });
       }
@@ -144,5 +146,9 @@ export class UserForm {
 
   get dob() {
     return this.userForm.get('dob');
+  }
+
+  get profilePicture() {
+    return this.userForm.get('profilePicture');
   }
 }

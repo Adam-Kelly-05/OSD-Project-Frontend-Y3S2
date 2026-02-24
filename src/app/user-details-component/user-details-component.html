@@ -5,28 +5,20 @@
       {{ user.name }}
     </mat-card-title>
     <mat-card-content>
+      <img
+        [src]="user.profilePicture || defaultProfilePicture"
+        [alt]="user.name"
+        class="user-image"
+      />
       <p>Phone Number: {{ user.phonenumber }}</p>
       <p>Email: {{ user.email }}</p>
       <p>Date of Birth: {{ user.dob | date: 'mediumDate' }}</p>
       <p>Date Joined: {{ user.dateJoined | date: 'mediumDate' }}</p>
       <p>Date Last Updated: {{ user.lastUpdated | date: 'mediumDate' }}</p>
-      <!-- @if (isAuthenticated$ | async) {
-        <button mat-flat-button color="error" (click)="deleteUser()">Delete</button>
-      } -->
+      <p>Location: {{ user.latitude }}, {{ user.longitude }}</p>
     </mat-card-content>
   </mat-card>
   @if (isAuthenticated$ | async) {
     <app-user-form [user]="user"></app-user-form>
-  }
-  @if (user.latitude != null && user.longitude != null) {
-    <mat-card>
-      <mat-card-content>
-        <app-map
-          [latitude]="user.latitude"
-          [longitude]="user.longitude"
-          [markerLabel]="user.name"
-        ></app-map>
-      </mat-card-content>
-    </mat-card>
   }
 }

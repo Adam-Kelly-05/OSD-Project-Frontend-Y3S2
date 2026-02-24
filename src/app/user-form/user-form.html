@@ -33,6 +33,10 @@
       <mat-label for="userDob">Date of Birth:</mat-label>
       <input id="userDob" type="date" formControlName="dob" matInput />
     </mat-form-field>
+    <mat-form-field>
+      <mat-label for="userProfilePicture">Profile Picture URL (optional):</mat-label>
+      <input id="userProfilePicture" type="url" formControlName="profilePicture" matInput />
+    </mat-form-field>
     <div>
       @if (dob?.hasError('required') && dob?.touched) {
         <mat-error>Input Required</mat-error>

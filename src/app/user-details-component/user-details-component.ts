@@ -23,7 +23,6 @@ import { MapComponent } from '../map/map';
     AsyncPipe,
     DatePipe,
     UserForm,
-    MapComponent,
     MatButtonModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -43,6 +42,7 @@ export class UserDetailsComponent {
   id: string = '';
   user$: Observable<User> | undefined;
   isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
+  protected readonly defaultProfilePicture = '/defaultProfilePicture.jpg';
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';
