@@ -1,20 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import * as leaflet from 'leaflet';
-
-delete (leaflet.Icon.Default.prototype as any)._getIconUrl;
-leaflet.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'assets/marker-icon-2x.png',
-  iconUrl: 'assets/marker-icon.png',
-  shadowUrl: 'assets/marker-shadow.png',
-});
+import { Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import type * as Leaflet from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -29,52 +14,64 @@ export class MapComponent implements OnChanges, OnDestroy {
 
   @ViewChild('mapContainer') private mapContainer?: ElementRef<HTMLDivElement>;
 
-  private mapInstance?: leaflet.Map;
-  hasCoordinates = false;
+  private mapInstance?: Leaflet.Map;
+  private static leafletPromise?: Promise<typeof Leaflet>;
+  private static leafletIconConfigured = false;
+  
+  get hasCoordinates(): boolean {
+    return this.latitude != null && this.longitude != null;
+  }
 
-  ngOnChanges(_: SimpleChanges): void {
-    this.hasCoordinates = this.latitude != null && this.longitude != null;
-    queueMicrotask(() => this.renderMap());
+  ngOnChanges(): void {
+    queueMicrotask(() => void this.renderMap());
   }
 
   ngOnDestroy(): void {
-    if (this.mapInstance) {
-      this.mapInstance.remove();
-      this.mapInstance = undefined;
-    }
+    this.destroyMap();
   }
 
-  private renderMap(): void {
-    if (!this.hasCoordinates || !this.mapContainer) {
-      if (this.mapInstance) {
-        this.mapInstance.remove();
-        this.mapInstance = undefined;
-      }
+  private destroyMap(): void {
+    this.mapInstance?.remove();
+    this.mapInstance = undefined;
+  }
+
+  private async renderMap(): Promise<void> {
+    const { latitude, longitude, mapContainer } = this;
+
+    if (latitude == null || longitude == null || !mapContainer) {
+      this.destroyMap();
       return;
     }
 
-    const latitude = this.latitude;
-    const longitude = this.longitude;
-    if (latitude == null || longitude == null) {
-      return;
-    }
-
-    if (this.mapInstance) {
-      this.mapInstance.remove();
-    }
+    this.destroyMap();
+    const leaflet = await this.getLeaflet();
+    if (!this.mapContainer) return;
 
     const map = leaflet.map(this.mapContainer.nativeElement).setView([latitude, longitude], 13);
     this.mapInstance = map;
 
-    leaflet
-      .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-      })
-      .addTo(map);
+    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
 
     const marker = leaflet.marker([latitude, longitude]).addTo(map);
-    if (this.markerLabel.trim()) {
-      marker.bindPopup(this.markerLabel).openPopup();
+    if (this.markerLabel.trim()) marker.bindPopup(this.markerLabel).openPopup();
+  }
+
+  private async getLeaflet(): Promise<typeof Leaflet> {
+    MapComponent.leafletPromise ??= import('leaflet');
+    const leaflet = await MapComponent.leafletPromise;
+
+    if (!MapComponent.leafletIconConfigured) {
+      delete (leaflet.Icon.Default.prototype as any)._getIconUrl;
+      leaflet.Icon.Default.mergeOptions({
+        iconRetinaUrl: '/marker-icon-2x.png',
+        iconUrl: '/marker-icon.png',
+        shadowUrl: '/marker-shadow.png',
+      });
+      MapComponent.leafletIconConfigured = true;
     }
+
+    return leaflet;
   }
 }

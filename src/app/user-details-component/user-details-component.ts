@@ -12,7 +12,6 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog'
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { map } from 'rxjs/operators';
-import { MapComponent } from '../map/map';
 
 @Component({
   selector: 'app-user-details-component',
@@ -67,7 +66,6 @@ export class UserDetailsComponent {
 
     dialogRef.afterClosed().subscribe((result: boolean | undefined) => {
       if (result) {
-        // User clicked "Yes", perform the delete operation
         this.deleteItem();
       }
     });
@@ -88,8 +86,8 @@ export class UserDetailsComponent {
 
   openErrorSnackBar(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
-      duration: 15000, // Set the duration for how long the snackbar should be visible (in milliseconds)
-      panelClass: ['error-snackbar'], // You can define custom styles for the snackbar
+      duration: 15000,
+      panelClass: ['error-snackbar'],
     });
   }
 }
