@@ -10,7 +10,8 @@
             <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
             <mat-card-title>{{ listing.title }}</mat-card-title>
             <p class="listing-price">
-              {{ convertedPrice$(listing) | async }}
+              <!-- At least one diget beofre the decimal point, atleast two digits after the decimal point, no more than two digits after the decimal point -->
+              {{ convertedPrice$(listing) | async | number: '1.2-2' }}
               {{ selectedCurrency.currency() }}
             </p>
           </mat-card-content>

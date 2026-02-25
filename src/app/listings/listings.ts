@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ListingService } from './listing.service';
 import { Observable, shareReplay } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { ListingSearchState } from '../shared/listing-search.service';
@@ -10,7 +10,7 @@ import { Listing } from './listing.interface';
 
 @Component({
   selector: 'app-listings',
-  imports: [AsyncPipe, RouterLink, MatCard, MatCardTitle, MatCardContent],
+  imports: [AsyncPipe, DecimalPipe, RouterLink, MatCard, MatCardTitle, MatCardContent],
   templateUrl: './listings.html',
   styleUrl: './listings.scss',
 })

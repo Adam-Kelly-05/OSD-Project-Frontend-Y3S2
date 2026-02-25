@@ -5,7 +5,10 @@
       <div class="left-column">
         <section>
           <h3>{{ listing.description }}</h3>
-          <p>€{{ listing.price }}</p>
+          <p>
+            {{ convertedPrice$(listing) | async | number: '1.2-2' }}
+            {{ selectedCurrency.currency() }}
+          </p>
           <p>Date posted: {{ listing.datePosted | date: 'mediumDate' }}</p>
           <button>
             <a [routerLink]="['/user-list', listing.posterUser]">Click to view poster</a>

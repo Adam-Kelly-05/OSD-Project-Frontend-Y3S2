@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ListingService } from '../listings/listing.service';
@@ -11,6 +11,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog'
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { map, shareReplay, take } from 'rxjs/operators';
+import { CurrencyState } from '../shared/currency.service';
 
 @Component({
   selector: 'app-listing-details-component',
@@ -18,6 +19,7 @@ import { map, shareReplay, take } from 'rxjs/operators';
     RouterModule,
     AsyncPipe,
     DatePipe,
+    DecimalPipe,
     ListingForm,
     MapComponent,
     MatDialogModule,
@@ -32,11 +34,13 @@ export class ListingDetailsComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private oidc = inject(OidcSecurityService);
+  protected selectedCurrency = inject(CurrencyState);
 
   id = '';
   constructor(private snackBar: MatSnackBar) {}
   listing$: Observable<Listing> | undefined;
   canEditListing$: Observable<boolean> = of(false);
+  private convertedPriceCache = new Map<string, Observable<number>>();
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || '';
@@ -103,6 +107,18 @@ export class ListingDetailsComponent {
       duration: 15000,
       panelClass: ['error-snackbar'],
     });
+  }
+
+  protected convertedPrice$(listing: Listing): Observable<number> {
+    const currency = this.selectedCurrency.currency();
+    const key = `${listing._id}${listing.price}-${currency}`;
+    if (this.convertedPriceCache.get(key)) {
+      return this.convertedPriceCache.get(key)!;
+    } else {
+      return this.convertedPriceCache
+        .set(key, this.listingService.convertCurrency(listing.price, currency).pipe(shareReplay(1)))
+        .get(key)!;
+    }
   }
 
   private extractUserSub(result: unknown): string | undefined {
