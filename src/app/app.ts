@@ -96,6 +96,10 @@ export class App {
     }
   }
 
+  search(): void {
+    this.router.navigate(['/listing-list']);
+  }
+
   private extractUserSub(result: unknown): string | undefined {
     if (!result || typeof result !== 'object') {
       return undefined;

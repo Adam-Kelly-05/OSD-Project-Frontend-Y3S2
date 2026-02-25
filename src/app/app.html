@@ -36,6 +36,7 @@
     [ngModel]="listingSearch.searchId()"
     (ngModelChange)="listingSearch.searchId.set($event)"
     placeholder="Enter Listing Search"
+    (keydown.enter)="search()"
   />
 </nav>
 
