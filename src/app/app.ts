@@ -6,7 +6,8 @@ import { AsyncPipe } from '@angular/common';
 import { UserService } from './users/user.service';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ListingSearchState } from './listings/listing-search.service';
+import { ListingSearchState } from './shared/listing-search.service';
+import { CurrencyState, CurrencyCode } from './shared/currency-state.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class App {
   private userService = inject(UserService);
   private router = inject(Router);
   protected listingSearch = inject(ListingSearchState);
+  protected currencyState = inject(CurrencyState);
 
   isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
   userData$ = this.oidc.userData$;
@@ -86,6 +88,12 @@ export class App {
 
   logout() {
     this.oidc.logoff().subscribe();
+  }
+
+  updateCurrency(value: string): void {
+    if (value === 'EUR' || value === 'USD' || value === 'GBP') {
+      this.currencyState.currency.set(value as CurrencyCode);
+    }
   }
 
   private extractUserSub(result: unknown): string | undefined {

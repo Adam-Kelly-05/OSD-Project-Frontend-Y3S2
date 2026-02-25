@@ -17,7 +17,7 @@ export class MapComponent implements OnChanges, OnDestroy {
   private mapInstance?: Leaflet.Map;
   private static leafletPromise?: Promise<typeof Leaflet>;
   private static leafletIconConfigured = false;
-  
+
   get hasCoordinates(): boolean {
     return this.latitude != null && this.longitude != null;
   }
@@ -50,9 +50,11 @@ export class MapComponent implements OnChanges, OnDestroy {
     const map = leaflet.map(this.mapContainer.nativeElement).setView([latitude, longitude], 13);
     this.mapInstance = map;
 
-    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
+    leaflet
+      .tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      })
+      .addTo(map);
 
     const marker = leaflet.marker([latitude, longitude]).addTo(map);
     if (this.markerLabel.trim()) marker.bindPopup(this.markerLabel).openPopup();

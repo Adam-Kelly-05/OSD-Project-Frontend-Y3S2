@@ -19,6 +19,17 @@
     <button (click)="logout()">Logout</button>
   }
 
+  <select
+    name="Currency"
+    id="currency"
+    [ngModel]="currencyState.currency()"
+    (ngModelChange)="updateCurrency($event)"
+  >
+    <option value="EUR">EUR</option>
+    <option value="USD">USD</option>
+    <option value="GBP">GBP</option>
+  </select>
+
   <input
     id="listingSearchString"
     type="text"

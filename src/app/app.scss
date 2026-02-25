@@ -7,11 +7,15 @@
   gap: 6px;
 }
 
-button {
+button, select {
   padding: 4px 10px;
   background: #203e3e;
   color: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 4px;
   cursor: pointer;
+}
+
+select {
+  height: 30px;
 }
