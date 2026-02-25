@@ -9,7 +9,10 @@
           <mat-card-content>
             <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
             <mat-card-title>{{ listing.title }}</mat-card-title>
-            <p class="listing-price">€{{ listing.price }}</p>
+            <p class="listing-price">
+              {{ convertedPrice$(listing) | async }}
+              {{ selectedCurrency.currency() }}
+            </p>
           </mat-card-content>
         </mat-card>
       }

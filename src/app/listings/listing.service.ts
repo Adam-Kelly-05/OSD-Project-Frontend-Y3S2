@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, of, retry, throwError } from 'rxjs';
 import { Listing } from './listing.interface';
 import { environment } from '../../environments/environment';
+
+export type ListingView = Listing & { convertedPrice: number };
 
 @Injectable({
   providedIn: 'root',
@@ -48,5 +50,18 @@ export class ListingService {
       );
     }
     return throwError(() => new Error(`Request failed (${error.status}). Please try again.`));
+  }
+
+  convertCurrency(amount: number, currency: string): Observable<number> {
+    if (currency === 'EUR') {
+      return of(amount);
+    } else {
+      return this.http
+        .get<any>(`https://api.frankfurter.app/latest?amount=${amount}&from=EUR&to=${currency}`)
+        .pipe(
+          map((res) => res.rates[currency]),
+          catchError(() => of(amount)),
+        );
+    }
   }
 }

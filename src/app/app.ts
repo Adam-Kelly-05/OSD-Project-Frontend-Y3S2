@@ -7,7 +7,7 @@ import { UserService } from './users/user.service';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ListingSearchState } from './shared/listing-search.service';
-import { CurrencyState, CurrencyCode } from './shared/currency-state.service';
+import { CurrencyState, CurrencyCode } from './shared/currency.service';
 
 @Component({
   selector: 'app-root',

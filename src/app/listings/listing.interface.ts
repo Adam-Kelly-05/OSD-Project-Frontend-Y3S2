@@ -3,7 +3,7 @@ export interface Listing {
   title: string;
   description: string;
   image: string;
-  price: Number;
+  price: number;
   posterUser?: string;
   latitude?: number;
   longitude?: number;
