@@ -1,0 +1,23 @@
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin: 3%;
+  gap: 3%;
+}
+
+.listing-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  margin-bottom: 3%;
+}
+
+.listing-card {
+  cursor: pointer;
+  background-color: red;
+}
+
+mat-card-title,
+mat-card-subtitle {
+  color: black;
+}

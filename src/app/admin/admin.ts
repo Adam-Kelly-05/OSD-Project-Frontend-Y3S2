@@ -4,12 +4,28 @@ import { Observable } from 'rxjs';
 import { Listing } from '../listings/listing.interface';
 import words from 'profane-words';
 import { AsyncPipe } from '@angular/common';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import {
+  MatCard,
+  MatCardTitle,
+  MatCardContent,
+  MatCardFooter,
+  MatCardSubtitle,
+} from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+
+const profanityWords = new Set(words);
 
 @Component({
   selector: 'app-admin',
-  imports: [AsyncPipe, RouterLink, MatCard, MatCardTitle, MatCardContent],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    MatCardFooter,
+    MatCardSubtitle,
+  ],
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
@@ -17,8 +33,12 @@ export class Admin {
   protected dataService = inject(ListingService);
   listings$: Observable<Listing[]> = this.dataService.getListings();
 
-  protected containsProfanity(string: string): boolean {
-    const lowerString = string.toLowerCase();
-    return words.some((word) => lowerString.includes(word));
+  protected containsProfanity(string: string): string | null {
+    const matchedWord = string
+      .toLowerCase()
+      .split(' ')
+      .find((word) => profanityWords.has(word));
+
+    return matchedWord ?? null;
   }
 }

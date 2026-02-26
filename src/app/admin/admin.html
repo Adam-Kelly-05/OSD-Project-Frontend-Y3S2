@@ -1,13 +1,18 @@
-<p>Innapropriaite Listings</p>
+<h1>Innapropriaite Listings</h1>
 
 @if (listings$ | async; as listings) {
   <div class="listings-grid">
     @for (listing of listings; track listing._id) {
-      @if (containsProfanity(listing.title)) {
-        <mat-card [routerLink]="['/listing-list', listing._id]" style="cursor: pointer">
+      @if (containsProfanity(listing.title) || containsProfanity(listing.description)) {
+        <mat-card [routerLink]="['/listing-list', listing._id]" class="listing-card">
           <mat-card-content>
             <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
             <mat-card-title>{{ listing.title }}</mat-card-title>
+            <mat-card-subtitle
+              >Innapropriaite Word: "{{
+                containsProfanity(listing.title) || containsProfanity(listing.description)
+              }}"</mat-card-subtitle
+            >
           </mat-card-content>
         </mat-card>
       }
