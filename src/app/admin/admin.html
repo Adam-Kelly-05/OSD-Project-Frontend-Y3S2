@@ -1,1 +1,18 @@
-<p>admin works!</p>
+<p>Innapropriaite Listings</p>
+
+@if (listings$ | async; as listings) {
+  <div class="listings-grid">
+    @for (listing of listings; track listing._id) {
+      @if (containsProfanity(listing.title)) {
+        <mat-card [routerLink]="['/listing-list', listing._id]" style="cursor: pointer">
+          <mat-card-content>
+            <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
+            <mat-card-title>{{ listing.title }}</mat-card-title>
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  </div>
+} @else {
+  Loading listings...
+}
