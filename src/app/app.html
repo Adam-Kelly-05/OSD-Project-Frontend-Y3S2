@@ -18,6 +18,10 @@
   @if (isAuthenticated$ | async) {
     <button (click)="logout()">Logout</button>
   }
+  @if (isAdmin$ | async) {
+    <button routerLink="/admin">Admin</button>
+  }
+
 
   <select
     name="Currency"

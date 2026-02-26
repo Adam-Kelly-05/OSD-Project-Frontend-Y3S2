@@ -1,7 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { UserService } from './users/user.service';
 import { of } from 'rxjs';
@@ -26,6 +26,17 @@ export class App {
 
   isAuthenticated$ = this.oidc.isAuthenticated$.pipe(map((r) => !!r?.isAuthenticated));
   userData$ = this.oidc.userData$;
+
+  isAdmin$ = this.userData$.pipe(
+    map((userDataResult) => this.extractUserSub(userDataResult)),
+    switchMap((userSub) => {
+      return this.userService.getUserById(userSub!).pipe(
+        map((user) => user.role === 'Admin'),
+        catchError(() => of(false)),
+      );
+    }),
+    shareReplay(1),
+  );
 
   constructor() {
     this.oidc

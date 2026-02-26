@@ -9,4 +9,5 @@ export interface User {
   longitude?: number;
   dateJoined?: Date;
   lastUpdated?: Date;
+  role?: string;
 }
