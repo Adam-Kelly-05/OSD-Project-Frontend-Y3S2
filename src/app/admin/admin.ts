@@ -17,23 +17,15 @@ const profanityWords = new Set(words);
 
 @Component({
   selector: 'app-admin',
-  imports: [
-    AsyncPipe,
-    RouterLink,
-    MatCard,
-    MatCardTitle,
-    MatCardContent,
-    MatCardFooter,
-    MatCardSubtitle,
-  ],
+  imports: [AsyncPipe, RouterLink, MatCard, MatCardTitle, MatCardContent, MatCardSubtitle],
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
 export class Admin {
-  protected dataService = inject(ListingService);
+  dataService = inject(ListingService);
   listings$: Observable<Listing[]> = this.dataService.getListings();
 
-  protected containsProfanity(string: string): string | null {
+  containsProfanity(string: string): string | null {
     const matchedWord = string
       .toLowerCase()
       .split(' ')
