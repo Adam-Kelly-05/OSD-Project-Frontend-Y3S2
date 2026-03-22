@@ -24,6 +24,7 @@ const profanityWords = new Set(words);
 export class Admin {
   dataService = inject(ListingService);
   listings$: Observable<Listing[]> = this.dataService.getListings();
+  stats = '';
 
   containsProfanity(string: string): string | null {
     const matchedWord = string
@@ -32,5 +33,13 @@ export class Admin {
       .find((word) => profanityWords.has(word));
 
     return matchedWord ?? null;
+  }
+
+  ngOnInit() {
+    fetch('https://siqssfzfud.execute-api.eu-west-1.amazonaws.com/itemCounts')
+      .then((res) => res.json())
+      .then((data) => {
+        this.stats = data.message;
+      });
   }
 }
