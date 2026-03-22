@@ -1,4 +1,4 @@
-<h1>Innapropriaite Listings</h1>
+<h1>Inappropriate Listings</h1>
 
 @if (listings$ | async; as listings) {
   <div class="listings-grid">
@@ -9,7 +9,7 @@
             <img [src]="listing.image" [alt]="listing.title" class="listing-image" />
             <mat-card-title>{{ listing.title }}</mat-card-title>
             <mat-card-subtitle
-              >Innapropriaite Word: "{{
+              >Inappropriate Word: "{{
                 containsProfanity(listing.title) || containsProfanity(listing.description)
               }}"</mat-card-subtitle
             >
