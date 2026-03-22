@@ -47,6 +47,7 @@ export class Admin {
       .subscribe({
         next: (data) => {
           this.stats = data.message;
+          console.log('Stats loaded:', this.stats);
         },
         error: () => {
           this.stats = 'Could not load statistics';
