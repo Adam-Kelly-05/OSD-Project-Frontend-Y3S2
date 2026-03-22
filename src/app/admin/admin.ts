@@ -12,6 +12,7 @@ import {
   MatCardSubtitle,
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 const profanityWords = new Set(words);
 
@@ -25,6 +26,7 @@ export class Admin {
   dataService = inject(ListingService);
   listings$: Observable<Listing[]> = this.dataService.getListings();
   stats = '';
+  http = inject(HttpClient);
 
   containsProfanity(string: string): string | null {
     const matchedWord = string
@@ -35,11 +37,20 @@ export class Admin {
     return matchedWord ?? null;
   }
 
-  ngOnInit() {
-    fetch('https://siqssfzfud.execute-api.eu-west-1.amazonaws.com/itemCounts')
-      .then((res) => res.json())
-      .then((data) => {
-        this.stats = data.message;
+  ngOnInit(): void {
+    this.getStats();
+  }
+
+  getStats(): void {
+    this.http
+      .get<{ message: string }>('https://siqssfzfud.execute-api.eu-west-1.amazonaws.com/itemCounts')
+      .subscribe({
+        next: (data) => {
+          this.stats = data.message;
+        },
+        error: () => {
+          this.stats = 'Could not load statistics';
+        },
       });
   }
 }
