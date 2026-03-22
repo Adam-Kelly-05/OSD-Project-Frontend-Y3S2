@@ -1,3 +1,9 @@
+<h1>Statistics</h1>
+
+<p>
+  <b>{{ stats }}</b>
+</p>
+
 <h1>Inappropriate Listings</h1>
 
 @if (listings$ | async; as listings) {
@@ -21,7 +27,3 @@
 } @else {
   Loading listings...
 }
-
-<h1>Statistics</h1>
-
-<p><b>{{ stats }}</b></p>
